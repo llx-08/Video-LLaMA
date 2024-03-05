@@ -82,7 +82,7 @@ def gradio_reset(chat_state, img_list):
         img_list = []
     return None, gr.update(value=None, interactive=True), gr.update(value=None, interactive=True), gr.update(placeholder='Please upload your video first', interactive=False),gr.update(value="Upload & Start Chat", interactive=True), chat_state, img_list
 
-def upload_imgorvideo(gr_video, gr_img, text_input, chat_state,chatbot,audio_flag):
+def upload_imgorvideo(gr_video, gr_img, text_input, chat_state, chatbot, audio_flag):
     if args.model_type == 'vicuna':
         chat_state = default_conversation.copy()
     else:

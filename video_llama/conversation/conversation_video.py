@@ -235,6 +235,7 @@ class Chat:
         msg = ""
         if isinstance(video_path, str):  # is a video path
             ext = os.path.splitext(video_path)[-1].lower()
+            print("video path")
             print(video_path)
             # image = self.vis_processor(image).unsqueeze(0).to(self.device)
             video, msg = load_video(
@@ -264,6 +265,10 @@ class Chat:
                 audio_emb,_  = self.model.encode_audioQformer(audio)
                 img_list.append(audio_emb)
                 img_list.append(image_emb)
+
+                print("check audio&image embedding")
+                print(img_list)
+
                 conv.system = ""
                 # conv.append_message(conv.roles[0], "The audio of this video is <Video><ImageHere></Video> ")
                 conv.append_message(conv.roles[0], "Close your eyes, open your ears and you imagine only based on the sound that: <ImageHere>. \
@@ -345,4 +350,4 @@ if __name__ =='__main__':
     video_path = '/mnt/workspace/videoGPT/Video-LLaMA/examples/applausing.mp4'
     # import torch.classes.torchaudio.ffmpeg_StreamReader
     # ffmpeg_StreamReader(video_path)
-    load_and_transform_audio_data([video_path],"cpu",  clips_per_video=8)
+    load_and_transform_audio_data([video_path],"cpu",clips_per_video=8)
