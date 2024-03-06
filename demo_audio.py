@@ -90,23 +90,26 @@ zero_img_embed = torch.zeros_like(img_list[0])
 img_list_.append(zero_img_embed)
 img_list_.append(img_list[1])
 
+print("img_list_")
+print(img_list_)
+
 while True:
     user_message = input("User/ ")
 
     chat.ask(user_message, chat_state)
 
-    num_beams = 1
+    num_beams = 2
     temperature = 1.0
 
-    llm_message = chat.answer(conv=chat_state,
-                                  img_list=img_list,
-                                  num_beams=num_beams,
-                                  temperature=temperature,
-                                  max_new_tokens=300,
-                                  max_length=2000)[0]
-    print(chat_state.get_prompt())
-    print(chat_state)
-    print(llm_message)
+    # llm_message = chat.answer(conv=chat_state,
+    #                               img_list=img_list,
+    #                               num_beams=num_beams,
+    #                               temperature=temperature,
+    #                               max_new_tokens=300,
+    #                               max_length=2000)[0]
+    # print(chat_state.get_prompt())
+    # print(chat_state)
+    # print(llm_message)
 
     llm_message = chat.answer(conv=chat_state,
                                   img_list=img_list_,
