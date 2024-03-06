@@ -86,7 +86,7 @@ print("img_list")
 print(img_list)
 
 img_list_ = []
-zero_img_embed = torch.zero_like(img_list[0])
+zero_img_embed = torch.zeros_like(img_list[0])
 img_list_.append(zero_img_embed)
 img_list_.append(img_list[1])
 
