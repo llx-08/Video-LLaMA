@@ -97,6 +97,7 @@ def upload_imgorvideo(gr_video, gr_img, text_input, chat_state, chatbot, audio_f
         llm_message = chat.upload_img(gr_img, chat_state, img_list)
         return gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=True, placeholder='Type and press Enter'), gr.update(value="Start Chatting", interactive=False), chat_state, img_list,chatbot
     elif gr_video is not None and gr_img is None:
+        print("gr video:")
         print(gr_video)
         chatbot = chatbot + [((gr_video,), None)]
         chat_state.system =  ""

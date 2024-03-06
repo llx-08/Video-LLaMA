@@ -277,6 +277,7 @@ class Chat:
 
             else:  # only vison no audio
                 # conv.system = "You can understand the video that the user provides. Follow the instructions carefully and explain your answers in detail."
+                print("only vison no audio")
                 image_emb, _ = self.model.encode_videoQformer_visual(video)
                 img_list.append(image_emb)
                 conv.append_message(conv.roles[0], "<Video><ImageHere></Video> "+ msg)

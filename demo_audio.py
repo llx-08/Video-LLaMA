@@ -71,12 +71,29 @@ vis_processor = registry.get_processor_class(vis_processor_cfg.name).from_config
 chat = Chat(model, vis_processor, device='cuda:{}'.format(args.gpu_id))
 print('Initialization Finished')
 
+if args.model_type == 'vicuna':
+    chat_state = default_conversation.copy()
+else:
+    chat_state = conv_llava_llama_2.copy()
 
 while True:
-    if args.model_type == 'vicuna':
-        chat_state = default_conversation.copy()
-    else:
-        chat_state = conv_llava_llama_2.copy()
 
-        video_path = []
-        llm_message = chat.upload_video(video_path, chat_state, img_list)
+        print(gr_video)
+        chat_state.system = ""
+        img_list = []
+        llm_message = chat.upload_video(gr_video, chat_state, img_list)
+
+        chat.ask(user_message, chat_state)
+
+        num_beams = 1
+        temperature = 1.0
+
+
+        llm_message = chat.answer(conv=chat_state,
+                                  img_list=img_list,
+                                  num_beams=num_beams,
+                                  temperature=temperature,
+                                  max_new_tokens=300,
+                                  max_length=2000)[0]
+        print(chat_state.get_prompt())
+        print(chat_state)
