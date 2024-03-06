@@ -284,6 +284,7 @@ class Chat:
             return "Received."
 
     def upload_audio(self, audio_path, conv, img_list):
+        pass
 
     def upload_video_without_audio(self, video_path, conv, img_list):
         msg = ""
