@@ -77,20 +77,18 @@ else:
     chat_state = conv_llava_llama_2.copy()
 
 
-gr_video = "/home/asr/lilinxuan/llx_videollama/applausing.mp4"
+gr_video = "/home/asr/lilinxuan/llx_videollama/examples/applausing.mp4"
 chat_state.system = ""
 img_list = []
 llm_message = chat.upload_video(gr_video, chat_state, img_list)
 
 while True:
-
     user_message = input("User/ ")
 
     chat.ask(user_message, chat_state)
 
     num_beams = 1
     temperature = 1.0
-
 
     llm_message = chat.answer(conv=chat_state,
                                   img_list=img_list,
