@@ -283,6 +283,8 @@ class Chat:
                 conv.append_message(conv.roles[0], "<Video><ImageHere></Video> "+ msg)
             return "Received."
 
+    def upload_audio(self, audio_path, conv, img_list):
+
     def upload_video_without_audio(self, video_path, conv, img_list):
         msg = ""
         if isinstance(video_path, str):  # is a video path

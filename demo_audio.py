@@ -76,24 +76,27 @@ if args.model_type == 'vicuna':
 else:
     chat_state = conv_llava_llama_2.copy()
 
+
+gr_video = "/home/asr/lilinxuan/llx_videollama/applausing.mp4"
+chat_state.system = ""
+img_list = []
+llm_message = chat.upload_video(gr_video, chat_state, img_list)
+
 while True:
 
-        print(gr_video)
-        chat_state.system = ""
-        img_list = []
-        llm_message = chat.upload_video(gr_video, chat_state, img_list)
+    user_message = input("User/ ")
 
-        chat.ask(user_message, chat_state)
+    chat.ask(user_message, chat_state)
 
-        num_beams = 1
-        temperature = 1.0
+    num_beams = 1
+    temperature = 1.0
 
 
-        llm_message = chat.answer(conv=chat_state,
+    llm_message = chat.answer(conv=chat_state,
                                   img_list=img_list,
                                   num_beams=num_beams,
                                   temperature=temperature,
                                   max_new_tokens=300,
                                   max_length=2000)[0]
-        print(chat_state.get_prompt())
-        print(chat_state)
+    print(chat_state.get_prompt())
+    print(chat_state)
