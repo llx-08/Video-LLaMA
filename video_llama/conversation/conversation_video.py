@@ -284,7 +284,21 @@ class Chat:
             return "Received."
 
     def upload_audio(self, audio_path, conv, img_list):
-        pass
+        audio = load_and_transform_audio_data([audio_path], "cpu", clips_per_video=8)
+        audio = audio.to(self.device)
+
+        audio_emb, _ = self.model.encode_audioQformer(audio)
+        zero_img_embed = torch.zeros_like(audio_emb)
+
+        img_list.append(zero_img_embed)
+        img_list.append(audio_emb)
+
+        conv.system = ""
+        # conv.append_message(conv.roles[0], "The audio of this video is <Video><ImageHere></Video> ")
+        conv.append_message(conv.roles[0], "Close your eyes, open your ears and you imagine only based on the sound that: <ImageHere>. \
+                        Now answer my question based on what you have just heard.")
+
+        return "Received."
 
     def upload_video_without_audio(self, video_path, conv, img_list):
         msg = ""

@@ -77,21 +77,13 @@ else:
     chat_state = conv_llava_llama_2.copy()
 
 
-gr_video = "/home/asr/lilinxuan/llx_videollama/examples/applausing.mp4"
+audio_path = "/wiz-llm-storage/datasets/data06/English/librispeech/test-clean/1089/134686/1089-134686-0000.flac"
 chat_state.system = ""
 img_list = []
-llm_message = chat.upload_video(gr_video, chat_state, img_list)
+llm_message = chat.upload_audio(audio_path, chat_state, img_list)
 
 print("img_list")
 print(img_list)
-
-img_list_ = []
-zero_img_embed = torch.zeros_like(img_list[0])
-img_list_.append(zero_img_embed)
-img_list_.append(img_list[1])
-
-print("img_list_")
-print(img_list_)
 
 while True:
     user_message = input("User/ ")
@@ -112,7 +104,7 @@ while True:
     # print(llm_message)
 
     llm_message = chat.answer(conv=chat_state,
-                                  img_list=img_list_,
+                                  img_list=img_list,
                                   num_beams=num_beams,
                                   temperature=temperature,
                                   max_new_tokens=300,
