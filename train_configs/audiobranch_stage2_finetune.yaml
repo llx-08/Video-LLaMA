@@ -11,11 +11,11 @@ model:
   # If you want train models based on LLaMA-2-chat,
   # some ckpts could be download from our provided huggingface repo
   # i.e.  https://huggingface.co/DAMO-NLP-SG/Video-LLaMA-2-13B-Finetuned
-  llama_model: "ckpt/vicuna-13b/" or "ckpt/vicuna-7b/" or "ckpt/llama-2-7b-chat-hf"  or "ckpt/llama-2-13b-chat-hf"
-  imagebind_ckpt_path: "ckpt/imagebind_path/"
+  llama_model: "/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf"
+  imagebind_ckpt_path: "/home/asr/lilinxuan/modelzoo/video_llama"
   # The ckpt of audio branch after stage1 pretrained, 
-  ckpt: 'path/pretrained_visual_branch_ckpt'   # you can use our pretrained ckpt from https://huggingface.co/DAMO-NLP-SG/Video-LLaMA-2-13B-Pretrained/
-  ckpt_2:  'path/pretrained_audio_branch_ckpt'
+  ckpt: '/home/asr/lilinxuan/modelzoo/video_llama/VL_LLaMA_2_13B_Pretrained.pth'   # you can use our pretrained ckpt from https://huggingface.co/DAMO-NLP-SG/Video-LLaMA-2-13B-Pretrained/
+  ckpt_2:  '/home/asr/lilinxuan/modelzoo/video_llama/AL_LLaMA_2_13B_Pretrained.pth'
 
   # only train audio branch
   equip_audio_branch: True  # whether equips the audio branch
@@ -31,14 +31,14 @@ model:
   # vicuna and llama_2_chat use different template !!!!
 
   # for llama_2_chat:
-  # end_sym: "</s>"
-  # prompt_path: "prompts/alignment_image.txt"
-  # prompt_template: '[INST] <<SYS>>\n \n<</SYS>>\n\n{} [/INST] '
+  end_sym: "</s>"
+  prompt_path: "prompts/alignment_image.txt"
+  prompt_template: '[INST] <<SYS>>\n \n<</SYS>>\n\n{} [/INST] '
 
   # for vicuna:
-  end_sym: "###"
-  prompt_path: "prompts/alignment_image.txt"
-  prompt_template: '###Human: {} ###Assistant: '
+#  end_sym: "###"
+#  prompt_path: "prompts/alignment_image.txt"
+#  prompt_template: '###Human: {} ###Assistant: '
 
 
   
@@ -87,7 +87,7 @@ datasets:
         name: "blip_caption"
     num_video_query_token: 8
     tokenizer_name: "ckpt/vicuna-13b/" or "ckpt/vicuna-7b/" or "ckpt/llama-2-7b-chat-hf"  or "ckpt/llama-2-13b-chat-hf"
-    model_type: "llama_v2" or "vicuna"  # need to set, as vicuna and llama_2_chat use different template
+    model_type: "llama_v2" # or "vicuna"  # need to set, as vicuna and llama_2_chat use different template
     
 run:
   task: video_text_pretrain
@@ -99,7 +99,7 @@ run:
 
   weight_decay: 0.05
   max_epoch: 3
-  iters_per_epoch: 1000
+  iters_per_epoch: 1 # 1000
   batch_size_train: 4
   batch_size_eval: 2
   num_workers: 4

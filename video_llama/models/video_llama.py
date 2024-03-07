@@ -424,10 +424,15 @@ class VideoLLAMA(Blip2Base):
         return inputs_llama, atts_llama
 
     def forward(self, samples):
+        print("samples")
+        print(samples)
+
         if 'conv_type' in samples.keys() and samples['conv_type']=='multi':
             
             im_patch_token_id = self.IMAGE_PATCH_TOKEN_ID
             image = samples["images"]
+            print("image shape:", image.shape)
+
             input_ids = samples['input_ids']
             if len(image.size())==4:
                 time = 1
@@ -475,6 +480,7 @@ class VideoLLAMA(Blip2Base):
             return {"loss": loss}
         else:
             image = samples["image"]
+            print("image shape:", image.shape)
 
             if len(image.size()) != 5:
                 time = 1
