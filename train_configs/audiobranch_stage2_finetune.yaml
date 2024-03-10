@@ -85,7 +85,7 @@ datasets:
       train:
         name: "blip_caption"
     num_video_query_token: 8
-    tokenizer_name: "ckpt/vicuna-13b/" or "ckpt/vicuna-7b/" or "ckpt/llama-2-7b-chat-hf"  or "ckpt/llama-2-13b-chat-hf"
+    tokenizer_name: "/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf"
     model_type: "llama_v2" # or "vicuna"  # need to set, as vicuna and llama_2_chat use different template
     
 run:
