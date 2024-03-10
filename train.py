@@ -32,7 +32,7 @@ from video_llama.processors import *
 from video_llama.runners import *
 from video_llama.tasks import *
 
-
+os.environ ["CUDA_VISIBLE_DEVICES"] = '6'
 def parse_args():
     parser = argparse.ArgumentParser(description="Training")
 
