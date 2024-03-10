@@ -4,7 +4,6 @@ model:
   freeze_vit: True
   freeze_qformer: True
 
-
   # Q-Former
   num_query_token: 32
   
@@ -117,4 +116,4 @@ run:
   device: "cuda"
   world_size: 1
   dist_url: "env://"
-  distributed: True
+  distributed: False
