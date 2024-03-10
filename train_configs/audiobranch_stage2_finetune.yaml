@@ -58,8 +58,8 @@ datasets:
   llava_instruct:
     data_type: images
     build_info:
-      anno_dir: /home/asr/lilinxuan/llx_videollama/dataset/LLaVA-Instruct-150K/llava_instruct_demo.json
-      videos_dir: /home/asr/lilinxuan/llx_videollama/dataset/LLaVA-Instruct-150K/demo_video/
+      anno_dir: /home/asr/lilinxuan/llx_videollama/dataset/LLaVA/llava_instruct_demo.json
+      videos_dir: /home/asr/lilinxuan/llx_videollama/dataset/LLaVA/demo_video/
     vis_processor:
       train:
         name: "blip2_image_train"
