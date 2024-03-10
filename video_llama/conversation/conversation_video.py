@@ -231,7 +231,6 @@ class Chat:
         return output_text, output_token.cpu().numpy()
     
     def upload_video(self, video_path, conv, img_list):
-
         msg = ""
         if isinstance(video_path, str):  # is a video path
             ext = os.path.splitext(video_path)[-1].lower()
@@ -319,8 +318,7 @@ class Chat:
             # print(image)
         else:
             raise NotImplementedError
-        
-        
+
         # conv.system = "You can understand the video that the user provides.  Follow the instructions carefully and explain your answers in detail."
         image_emb, _ = self.model.encode_videoQformer_visual(video)
         img_list.append(image_emb)

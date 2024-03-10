@@ -16,6 +16,7 @@ import copy
 from video_llama.models.Qformer import BertConfig, BertLMHeadModel
 from video_llama.models.ImageBind.models.imagebind_model import ImageBindModel,ModalityType
 from video_llama.models.ImageBind.models import imagebind_model
+from video_llama.models.ImageBind.data import load_and_transform_audio_data
 # from flamingo_pytorch import PerceiverResampler
 @registry.register_model("video_llama")
 class VideoLLAMA(Blip2Base):
@@ -423,10 +424,67 @@ class VideoLLAMA(Blip2Base):
     
         return inputs_llama, atts_llama
 
+    def forward_(self, audios):
+        audio = load_and_transform_audio_data([audio_path], "cpu", clips_per_video=8)
+        audio = audio.to(self.device)
+
+        audio_emb, atts_audio = self.model.encode_audioQformer(audio, modality_type=ModalityType.AUDIO)
+        zero_img_embed = torch.zeros_like(audio_emb)
+
+        if self.prompt_list:
+            prompt = random.choice(self.prompt_list)
+            img_embeds, atts_img = self.prompt_wrap(audio_emb, atts_audio, prompt)
+
+        self.llama_tokenizer.padding_side = "right"
+
+        text = [t + self.end_sym for t in samples["text_input"]]
+
+        to_regress_tokens = self.llama_tokenizer(
+            text,
+            return_tensors="pt",
+            padding="longest",
+            truncation=True,
+            max_length=self.max_txt_len,
+            add_special_tokens=False
+        ).to(image.device)
+
+        targets = to_regress_tokens.input_ids.masked_fill(
+            to_regress_tokens.input_ids == self.llama_tokenizer.pad_token_id, -100
+        )
+
+        empty_targets = (
+            torch.ones([atts_audio.shape[0], atts_audio.shape[1] + 1],
+                       dtype=torch.long).to(image.device).fill_(-100)  # plus one for bos
+        )
+        targets = torch.cat([empty_targets, targets], dim=1)
+
+        batch_size = atts_audio.shape[0]
+        bos = torch.ones([batch_size, 1],
+                         dtype=to_regress_tokens.input_ids.dtype,
+                         device=to_regress_tokens.input_ids.device) * self.llama_tokenizer.bos_token_id
+        bos_embeds = self.llama_model.model.embed_tokens(bos)
+        atts_bos = atts_audio[:, :1]
+
+        to_regress_embeds = self.llama_model.model.embed_tokens(to_regress_tokens.input_ids)
+        inputs_embeds = torch.cat([bos_embeds, atts_audio, to_regress_embeds], dim=1)
+        attention_mask = torch.cat([atts_bos, atts_audio, to_regress_tokens.attention_mask], dim=1)
+
+        with self.maybe_autocast():
+            outputs = self.llama_model(
+                inputs_embeds=inputs_embeds,
+                attention_mask=attention_mask,
+                return_dict=True,
+                labels=targets,
+            )
+        loss = outputs.loss
+
+        return {"loss": loss}
+
     def forward(self, samples):
         print("samples")
         print(samples)
 
+        # chat
         if 'conv_type' in samples.keys() and samples['conv_type']=='multi':
             
             im_patch_token_id = self.IMAGE_PATCH_TOKEN_ID
@@ -441,11 +499,12 @@ class VideoLLAMA(Blip2Base):
             if self.train_flag == 0:
                 num_patch_tokens = self.num_video_query_token
                 img_embeds, atts_img = self.encode_videoQformer_visual(image)
-            elif self.train_flag == 1:
+            elif self.train_flag == 1: # always 1
                 num_patch_tokens = self.num_audio_query_token
                 image = einops.rearrange(image, 'b c t h w -> b t c h w')
                 img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
-                
+                # audio_embeds, atts_audio = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
+
             temp_input_ids = copy.deepcopy(input_ids)
             temp_input_ids[temp_input_ids == im_patch_token_id] = 0
             temp_input_embedding = self.llama_model.model.embed_tokens(temp_input_ids)
@@ -454,6 +513,7 @@ class VideoLLAMA(Blip2Base):
             cur_image_idx = 0
             for cur_input_ids, cur_input_embeds in zip(input_ids, temp_input_embedding):
                 cur_image_features = img_embeds[cur_image_idx]
+                # cur_audio_features = audio_embeds[cur_image_idx]
 
                 if (cur_input_ids == im_patch_token_id).sum() != num_patch_tokens:
                         raise ValueError("The number of image patch tokens should be the same as the number of image patches.")
@@ -478,7 +538,7 @@ class VideoLLAMA(Blip2Base):
                 )
             loss = outputs.loss
             return {"loss": loss}
-        else:
+        else: # not chat
             image = samples["image"]
             print("image shape:", image.shape)
 
@@ -495,7 +555,6 @@ class VideoLLAMA(Blip2Base):
             if self.prompt_list:
                 prompt = random.choice(self.prompt_list)
                 img_embeds, atts_img = self.prompt_wrap(img_embeds, atts_img, prompt)
-                
 
             self.llama_tokenizer.padding_side = "right"
 
