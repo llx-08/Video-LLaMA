@@ -481,8 +481,11 @@ class VideoLLAMA(Blip2Base):
         return {"loss": loss}
 
     def forward(self, samples):
-        print("samples")
-        print(samples)
+
+        logging.info(f"\n======== samples =======")
+        logging.info(samples)
+        logging.info(samples.shape)
+
 
         # chat
         if 'conv_type' in samples.keys() and samples['conv_type']=='multi':
