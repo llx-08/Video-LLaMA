@@ -484,13 +484,14 @@ class VideoLLAMA(Blip2Base):
 
         logging.info(f"\n======== samples =======")
         logging.info(samples)
-        logging.info(samples["images"].shape)
 
         # chat
         if 'conv_type' in samples.keys() and samples['conv_type']=='multi':
             
             im_patch_token_id = self.IMAGE_PATCH_TOKEN_ID
             image = samples["images"]
+
+            logging.info(image.shape)
 
             input_ids = samples['input_ids']
             if len(image.size())==4:
@@ -503,7 +504,8 @@ class VideoLLAMA(Blip2Base):
             elif self.train_flag == 1: # always 1
                 num_patch_tokens = self.num_audio_query_token
                 image = einops.rearrange(image, 'b c t h w -> b t c h w')
-                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
+                # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
+                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
                 # audio_embeds, atts_audio = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
 
             temp_input_ids = copy.deepcopy(input_ids)
@@ -541,6 +543,8 @@ class VideoLLAMA(Blip2Base):
             return {"loss": loss}
         else: # not chat
             image = samples["image"]
+            logging.info(image.shape)
+
 
             if len(image.size()) != 5:
                 time = 1
@@ -548,7 +552,9 @@ class VideoLLAMA(Blip2Base):
             
             if self.train_flag == 1:
                 image = einops.rearrange(image, 'b c t h w -> b t c h w')
-                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
+                # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
+                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
+
             else:
                 img_embeds, atts_img = self.encode_videoQformer_visual(image)
 
