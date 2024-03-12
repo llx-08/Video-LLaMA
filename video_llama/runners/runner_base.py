@@ -205,9 +205,15 @@ class RunnerBase:
             logging.info(
                 "dataset_ratios not specified, datasets will be concatenated (map-style datasets) or chained (webdataset.DataPipeline)."
             )
+            logging.info(
+                self.datasets
+            )
 
             datasets = reorg_datasets_by_split(self.datasets)
             self.datasets = datasets
+            logging.info(
+                self.datasets
+            )
             # self.datasets = concat_datasets(datasets)
 
             # print dataset statistics after concatenation/chaining

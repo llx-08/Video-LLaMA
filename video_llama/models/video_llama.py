@@ -484,15 +484,13 @@ class VideoLLAMA(Blip2Base):
 
         logging.info(f"\n======== samples =======")
         logging.info(samples)
-        logging.info(samples.shape)
-
+        logging.info(samples["images"].shape)
 
         # chat
         if 'conv_type' in samples.keys() and samples['conv_type']=='multi':
             
             im_patch_token_id = self.IMAGE_PATCH_TOKEN_ID
             image = samples["images"]
-            print("image shape:", image.shape)
 
             input_ids = samples['input_ids']
             if len(image.size())==4:
@@ -543,7 +541,6 @@ class VideoLLAMA(Blip2Base):
             return {"loss": loss}
         else: # not chat
             image = samples["image"]
-            print("image shape:", image.shape)
 
             if len(image.size()) != 5:
                 time = 1
@@ -562,6 +559,9 @@ class VideoLLAMA(Blip2Base):
             self.llama_tokenizer.padding_side = "right"
 
             text = [t + self.end_sym for t in samples["text_input"]]
+
+            logging.info("text before llama without chat")
+            logging.info(text)
 
             to_regress_tokens = self.llama_tokenizer(
                 text,
