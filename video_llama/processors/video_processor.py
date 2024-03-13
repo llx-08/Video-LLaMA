@@ -50,7 +50,7 @@ def load_video(video_path, n_frms=MAX_INT, height=-1, width=-1, sampling="unifor
     frms = tensor_frms.permute(3, 0, 1, 2).float()  # (C, T, H, W)
 
     logging.info(frms)
-    logging.info(frms.shape)
+    logging.info(frms.shape) # 3, 8, 224, 224
 
     if not return_msg:
         return frms

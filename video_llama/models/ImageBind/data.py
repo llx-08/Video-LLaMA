@@ -160,7 +160,11 @@ def load_and_transform_audio_data(
         all_clips = torch.stack(all_clips, dim=0)
         audio_outputs.append(all_clips)
 
-    return torch.stack(audio_outputs, dim=0)
+    result = torch.stack(audio_outputs, dim=0)
+    logging.info("load and transform data")
+    logging.info(result.shape)
+
+    return result
 
 
 def crop_boxes(boxes, x_offset, y_offset):
