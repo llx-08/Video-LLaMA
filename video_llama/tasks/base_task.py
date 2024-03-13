@@ -207,6 +207,7 @@ class BaseTask:
 
             samples = next(data_loader)
 
+            # prepare_sample:move to cuda
             samples = prepare_sample(samples, cuda_enabled=cuda_enabled)
             samples.update(
                 {
@@ -215,6 +216,9 @@ class BaseTask:
                     "iters": i,
                 }
             )
+
+            logging.info("++++++++++++++++++ samples in base task ++++++++++++++++++")
+            logging.info(samples)
 
             lr_scheduler.step(cur_epoch=inner_epoch, cur_step=i)
 
