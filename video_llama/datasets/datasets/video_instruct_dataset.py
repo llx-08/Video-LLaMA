@@ -52,6 +52,8 @@ class Video_Instruct_Dataset(BaseDataset):
         with data_path.open(encoding='utf-8') as f:
             self.annotation = json.load(f)
 
+
+
         self.num_video_query_token = num_video_query_token
         self.vis_root = vis_root
         self.resize_size = 224
@@ -77,6 +79,9 @@ class Video_Instruct_Dataset(BaseDataset):
         for _ in range(num_retries):
             try:
                 sample = self.annotation[index]
+
+                logging.info("==================================check sample==================================")
+                logging.info(sample)
 
                 video_path = self._get_video_path(sample)
                 conversation_list = sample['QA']
