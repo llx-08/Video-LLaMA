@@ -131,9 +131,15 @@ def load_and_transform_audio_data(
     )
 
     for audio_path in audio_paths:
-        print("audio path")
+        print("audio path?")
         print(audio_path)
         waveform, sr = torchaudio.load(audio_path)
+
+        logging.info("shape of audio")
+        logging.info(waveform.shape)
+        print("shape of audio")
+        print(waveform.shape)
+
         if sample_rate != sr:
             waveform = torchaudio.functional.resample(
                 waveform, orig_freq=sr, new_freq=sample_rate
@@ -164,6 +170,8 @@ def load_and_transform_audio_data(
     logging.info("load and transform data")
     logging.info(result.shape)
 
+    print("load and transform data")
+    print(result.shape)
     return result
 
 

@@ -52,7 +52,6 @@ class AudioDataset(BaseDataset):
                 audio_path = self._get_audio_path(sample)
                 conversation_list = sample['QA']
 
-
                 audio, msg = load_and_transform_audio_data()
 
                 audio, msg = load_video(
