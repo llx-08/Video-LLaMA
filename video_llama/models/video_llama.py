@@ -504,8 +504,8 @@ class VideoLLAMA(Blip2Base):
             elif self.train_flag == 1: # always 1
                 num_patch_tokens = self.num_audio_query_token
                 image = einops.rearrange(image, 'b c t h w -> b t c h w')
-                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
-                # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
+                # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
+                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
                 # audio_embeds, atts_audio = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
 
             temp_input_ids = copy.deepcopy(input_ids)

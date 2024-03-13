@@ -138,7 +138,7 @@ def load_and_transform_audio_data(
         logging.info("shape of audio")
         logging.info(waveform.shape)
         print("shape of audio")
-        print(waveform.shape)
+        print(waveform.shape)  # 1,166960
 
         if sample_rate != sr:
             waveform = torchaudio.functional.resample(
@@ -171,7 +171,7 @@ def load_and_transform_audio_data(
     logging.info(result.shape)
 
     print("load and transform data")
-    print(result.shape)
+    print(result.shape) # 1,8,1,128,204
     return result
 
 
