@@ -24,7 +24,6 @@ class WebvidDataset(BaseDataset):
         """
         super().__init__(vis_processor=vis_processor, text_processor=text_processor)
 
-
         # 读取一个路径下所有的
         ts_df = []
         for file_name in os.listdir(ann_root):
@@ -35,6 +34,10 @@ class WebvidDataset(BaseDataset):
         merged_df = pd.concat(ts_df)
         logging.info("==================================check webvid dataset==================================")
         logging.info(merged_df)
+
+        print("==================================check webvid dataset==================================")
+        print(merged_df)
+
         self.annotation = merged_df
         self.vis_root = vis_root
         self.resize_size = 224
@@ -50,7 +53,14 @@ class WebvidDataset(BaseDataset):
         num_retries = 10  # skip error videos
         for _ in range(num_retries):
             sample = self.annotation.iloc[index]
+
+            logging.info("==================================check sample==================================")
+            logging.info(sample)
+
             sample_dict = sample.to_dict()
+
+            logging.info(sample_dict)
+
             video_id = sample_dict['videoid']
 
             if 'name' in sample_dict.keys():
