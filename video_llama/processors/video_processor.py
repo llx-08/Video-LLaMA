@@ -17,7 +17,7 @@ from video_llama.processors import functional_video as F
 from omegaconf import OmegaConf
 from torchvision import transforms
 import random as rnd
-
+import logging
 
 MAX_INT = registry.get("MAX_INT")
 decord.bridge.set_bridge("torch")
@@ -25,6 +25,9 @@ decord.bridge.set_bridge("torch")
 def load_video(video_path, n_frms=MAX_INT, height=-1, width=-1, sampling="uniform", return_msg = False):
     decord.bridge.set_bridge("torch")
     vr = VideoReader(uri=video_path, height=height, width=width)
+
+    logging.info("-----------------------video feature-----------------------")
+    logging.info(vr)
 
     vlen = len(vr)
     start, end = 0, vlen
@@ -45,6 +48,9 @@ def load_video(video_path, n_frms=MAX_INT, height=-1, width=-1, sampling="unifor
     # print(type(temp_frms))
     tensor_frms = torch.from_numpy(temp_frms) if type(temp_frms) is not torch.Tensor else temp_frms
     frms = tensor_frms.permute(3, 0, 1, 2).float()  # (C, T, H, W)
+
+    logging.info(frms)
+    logging.info(frms.shape)
 
     if not return_msg:
         return frms

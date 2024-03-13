@@ -95,6 +95,7 @@ class Video_Instruct_Dataset(BaseDataset):
                     sampling ="uniform", return_msg = True
                 )
                 video = self.transform(video)
+
                 if 'cn' in self.data_type:
                     msg = ""
                 # 添加视频<DEFAULT_IMAGE_PATCH_TOKEN>,以及msg到convsation list 0

@@ -7,6 +7,7 @@ from decord import VideoReader
 import random
 import torch
 from torch.utils.data.dataloader import default_collate
+from video_llama.models.ImageBind.data import load_and_transform_audio_data
 
 class AudioDataset(BaseDataset):
     def __init__(self):
@@ -40,45 +41,65 @@ class AudioDataset(BaseDataset):
 
     def __getitem__(self, index):
         num_retries = 10  # skip error videos
+
         for _ in range(num_retries):
-            sample = self.annotation.iloc[index]
-            sample_dict = sample.to_dict()
-            video_id = sample_dict['videoid']
-
-            if 'name' in sample_dict.keys():
-                text = sample_dict['name'].strip()
-            else:
-                raise NotImplementedError("Un-supported text annotation format.")
-
-            # fetch video
-            video_path = self._get_video_path(sample_dict)
-            # if os.path.exists(video_path):
             try:
-                video = self.vis_processor(video_path)
+                sample = self.annotation[index]
+
+                logging.info("==================================check sample==================================")
+                logging.info(sample)
+
+                audio_path = self._get_audio_path(sample)
+                conversation_list = sample['QA']
+
+
+                audio, msg = load_and_transform_audio_data()
+
+                audio, msg = load_video(
+                    video_path=video_path,
+                    n_frms=self.num_frm,
+                    height=self.resize_size,
+                    width=self.resize_size,
+                    sampling="uniform", return_msg=True
+                )
+                video = self.transform(video)
+
+                if 'cn' in self.data_type:
+                    msg = ""
+                # 添加视频<DEFAULT_IMAGE_PATCH_TOKEN>,以及msg到convsation list 0
+                sources = preprocess_multimodal(copy.deepcopy(conversation_list), None,
+                                                cur_token_len=self.num_video_query_token, msg=msg)
+                new_sources = convert_source_vicuna_format(sources)
+
+                if self.model_type == 'vicuna':
+                    data_dict = preprocess(
+                        new_sources,
+                        self.tokenizer)
+                elif self.model_type == 'llama_v2':
+                    data_dict = preprocess_for_llama_v2(
+                        new_sources,
+                        self.tokenizer)
+                else:
+                    print('not support')
+                    raise ('not support')
+                data_dict = dict(input_ids=data_dict["input_ids"][0],
+                                 labels=data_dict["labels"][0])
+                # image exist in the data
+                data_dict['image'] = video
             except:
                 print(f"Failed to load examples with video: {video_path}. "
-                            f"Will randomly sample an example as a replacement.")
+                      f"Will randomly sample an example as a replacement.")
                 index = random.randint(0, len(self) - 1)
                 continue
-            caption = self.text_processor(text)
-
-            # print(video.size())
-            if video is None or caption is None \
-                    or video.size()!=torch.Size([3,self.vis_processor.n_frms,224,224]):
-                print(f"Failed to load examples with video: {video_path}. "
-                            f"Will randomly sample an example as a replacement.")
-                index = random.randint(0, len(self) - 1)
-                continue
-            else:
-                break
+            break
         else:
             raise RuntimeError(f"Failed to fetch video after {num_retries} retries.")
         # "image_id" is kept to stay compatible with the COCO evaluation format
         return {
             "image": video,
-            "text_input": caption,
-            "type":'video',
+            "text_input": data_dict["input_ids"],
+            "labels": data_dict["labels"],
+            "type": 'video',
         }
-
     def __len__(self):
         return len(self.annotation)
