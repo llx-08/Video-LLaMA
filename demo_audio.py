@@ -15,6 +15,8 @@ from video_llama.common.dist_utils import get_rank
 from video_llama.common.registry import registry
 from video_llama.conversation.conversation_video import Chat, Conversation, default_conversation,SeparatorStyle,conv_llava_llama_2
 import decord
+import logging
+
 decord.bridge.set_bridge('torch')
 
 #%%
