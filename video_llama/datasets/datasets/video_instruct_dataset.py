@@ -18,6 +18,7 @@ from video_llama.processors import transforms_video,AlproVideoTrainProcessor
 from torchvision import transforms
 from video_llama.processors.video_processor import ToTHWC,ToUint8,load_video
 from video_llama.conversation.conversation_video import Conversation,SeparatorStyle
+import logging
 
 DEFAULT_IMAGE_PATCH_TOKEN = '<ImageHere>'
 video_conversation = Conversation(
