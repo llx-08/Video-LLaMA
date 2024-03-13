@@ -48,6 +48,9 @@ class BaseTask:
 
         datasets_config = cfg.datasets_cfg
 
+        logging.info("dataset config: ")
+        logging.info(datasets_config)
+
         assert len(datasets_config) > 0, "At least one dataset has to be specified."
 
         for name in datasets_config:
