@@ -158,8 +158,8 @@ class Video_Instruct_Dataset(BaseDataset):
     #             batch['images'] = images
     #     batch['conv_type'] = 'multi'
     #     return batch
-
-    def __init__(self):
+    def __init__(self, vis_processor, text_processor, vis_root, ann_root,num_video_query_token=32,
+                 tokenizer_name = '/mnt/workspace/ckpt/vicuna-13b/',data_type = 'video', model_type='vicuna'):
         """
         aud_root (string): Root directory of audio (e.g. webvid_eval/video/)
         ann_root (string): Root directory of video (e.g. webvid_eval/annotations/)
