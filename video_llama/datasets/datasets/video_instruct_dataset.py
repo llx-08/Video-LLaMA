@@ -170,10 +170,23 @@ class Video_Instruct_Dataset(BaseDataset):
         with data_path.open(encoding='utf-8') as f:
             self.annotation = json.load(f)
 
+        self.num_video_query_token = num_video_query_token
         self.vis_root = vis_root
+        self.resize_size = 224
+        self.num_frm = 8
+        self.tokenizer = LlamaTokenizer.from_pretrained(tokenizer_name, use_fast=False)
+        self.tokenizer.pad_token = self.tokenizer.unk_token
+        self.tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=True)
+        self.IMAGE_PATCH_TOKEN_ID = self.tokenizer.get_vocab()[DEFAULT_IMAGE_PATCH_TOKEN]
+
+        self.transform = AlproVideoTrainProcessor(
+            image_size=self.resize_size, n_frms=self.num_frm
+        ).transform
+        self.data_type = data_type
+        self.model_type = model_type
 
     def _get_audio_path(self, sample):
-        rel_audio_fp = os.path.join(sample['page_dir'], str(sample['videoid']) + '.flac')
+        rel_audio_fp = sample['video']
         full_audio_fp = os.path.join(self.vis_root,  rel_audio_fp)
         return full_audio_fp
 
