@@ -18,6 +18,7 @@ from video_llama.processors import transforms_video,AlproVideoTrainProcessor
 from torchvision import transforms
 from video_llama.processors.video_processor import ToTHWC,ToUint8,load_video
 from video_llama.conversation.conversation_video import Conversation,SeparatorStyle
+from video_llama.models.ImageBind.data import load_and_transform_audio_data
 import logging
 
 DEFAULT_IMAGE_PATCH_TOKEN = '<ImageHere>'
@@ -228,7 +229,7 @@ class Video_Instruct_Dataset(BaseDataset):
                 # image exist in the data
                 data_dict['image'] = audio
             except:
-                print(f"Failed to load examples with video: {video_path}. "
+                print(f"Failed to load examples with video: {audio_path}. "
                       f"Will randomly sample an example as a replacement.")
                 index = random.randint(0, len(self) - 1)
                 continue
