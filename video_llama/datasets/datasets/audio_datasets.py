@@ -29,13 +29,9 @@ class AudioDataset(BaseDataset):
 
         self.annotation = merged_df
         self.vis_root = vis_root
-        self.resize_size = 224
-        self.num_frm = 8
-        self.frm_sampling_strategy = 'headtail'
-
 
     def _get_audio_path(self, sample):
-        rel_audio_fp = os.path.join(sample['page_dir'], str(sample['videoid']) + '.mp4')
+        rel_audio_fp = os.path.join(sample['page_dir'], str(sample['videoid']) + '.flac')
         full_audio_fp = os.path.join(self.vis_root,  rel_audio_fp)
         return full_audio_fp
 
@@ -52,19 +48,10 @@ class AudioDataset(BaseDataset):
                 audio_path = self._get_audio_path(sample)
                 conversation_list = sample['QA']
 
-                audio, msg = load_and_transform_audio_data()
+                audio = load_and_transform_audio_data(audio_path, 'cpu', clips_per_video=8)
 
-                audio, msg = load_video(
-                    video_path=video_path,
-                    n_frms=self.num_frm,
-                    height=self.resize_size,
-                    width=self.resize_size,
-                    sampling="uniform", return_msg=True
-                )
-                video = self.transform(video)
+                msg = ""
 
-                if 'cn' in self.data_type:
-                    msg = ""
                 # 添加视频<DEFAULT_IMAGE_PATCH_TOKEN>,以及msg到convsation list 0
                 sources = preprocess_multimodal(copy.deepcopy(conversation_list), None,
                                                 cur_token_len=self.num_video_query_token, msg=msg)
@@ -84,7 +71,7 @@ class AudioDataset(BaseDataset):
                 data_dict = dict(input_ids=data_dict["input_ids"][0],
                                  labels=data_dict["labels"][0])
                 # image exist in the data
-                data_dict['image'] = video
+                data_dict['image'] = audio
             except:
                 print(f"Failed to load examples with video: {video_path}. "
                       f"Will randomly sample an example as a replacement.")
@@ -95,10 +82,10 @@ class AudioDataset(BaseDataset):
             raise RuntimeError(f"Failed to fetch video after {num_retries} retries.")
         # "image_id" is kept to stay compatible with the COCO evaluation format
         return {
-            "image": video,
+            "image": audio,
             "text_input": data_dict["input_ids"],
             "labels": data_dict["labels"],
-            "type": 'video',
+            "type": 'audio',
         }
     def __len__(self):
         return len(self.annotation)

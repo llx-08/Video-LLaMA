@@ -42,9 +42,6 @@ model:
   prompt_path: "prompts/alignment_image.txt"
   prompt_template: '###Human: {} ###Assistant: '
 
-
-  
-
 datasets:
   cc_sbu_align:
     data_type: images
