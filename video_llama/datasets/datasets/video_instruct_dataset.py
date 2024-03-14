@@ -166,17 +166,10 @@ class Video_Instruct_Dataset(BaseDataset):
         split (string): val or test
         """
         super().__init__(vis_processor=vis_processor, text_processor=text_processor)
+        data_path = pathlib.Path(ann_root)
+        with data_path.open(encoding='utf-8') as f:
+            self.annotation = json.load(f)
 
-        # 读取一个路径下所有的
-        ts_df = []
-        for file_name in os.listdir(ann_root):
-            if file_name.endswith('.csv'):
-                df = pd.read_csv(os.path.join(ann_root, file_name))
-                ts_df.append(df)
-
-        merged_df = pd.concat(ts_df)
-
-        self.annotation = merged_df
         self.vis_root = vis_root
 
     def _get_audio_path(self, sample):
