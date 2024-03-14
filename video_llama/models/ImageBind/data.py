@@ -130,6 +130,8 @@ def load_and_transform_audio_data(
         clip_duration=clip_duration, clips_per_video=clips_per_video
     )
 
+    audio_paths = [audio_paths]
+
     for audio_path in audio_paths:
         print("audio path?")
         print(audio_path)

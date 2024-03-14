@@ -187,6 +187,10 @@ class Video_Instruct_Dataset(BaseDataset):
         self.model_type = model_type
 
     def _get_audio_path(self, sample):
+        logging.info("vis root")
+        logging.info(self.vis_root)
+        logging.info(sample['video'])
+
         rel_audio_fp = sample['video']
         full_audio_fp = os.path.join(self.vis_root,  rel_audio_fp)
         return full_audio_fp
