@@ -202,6 +202,8 @@ class Video_Instruct_Dataset(BaseDataset):
                 logging.info(sample)
 
                 audio_path = self._get_audio_path(sample)
+                logging.info("audio path in item")
+                logging.info(audio_path)
                 conversation_list = sample['QA']
 
                 audio = load_and_transform_audio_data(audio_path, 'cpu', clips_per_video=8)
