@@ -283,8 +283,11 @@ class Chat:
             return "Received."
 
     def upload_audio(self, audio_path, conv, img_list):
-        audio = load_and_transform_audio_data([audio_path], "cpu", clips_per_video=8)
+        audio = load_and_transform_audio_data(audio_path, "cpu", clips_per_video=8)
         audio = audio.to(self.device)
+
+        print("check audio shape:")
+        print(audio.shape)
 
         audio_emb, _ = self.model.encode_audioQformer(audio)
         zero_img_embed = torch.zeros_like(audio_emb)

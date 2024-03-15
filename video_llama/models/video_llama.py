@@ -438,9 +438,9 @@ class VideoLLAMA(Blip2Base):
             logging.info(image.shape)
 
             input_ids = samples['input_ids']
-            if len(image.size())==4:
-                time = 1
-                image = einops.repeat(image, 'b c h w -> b c t h w',t = time)
+            # if len(image.size())==4:
+            #     time = 1
+            #     image = einops.repeat(image, 'b c h w -> b c t h w',t = time)
 
             if self.train_flag == 0:
                 num_patch_tokens = self.num_video_query_token

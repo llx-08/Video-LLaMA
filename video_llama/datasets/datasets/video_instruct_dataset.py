@@ -187,9 +187,9 @@ class Video_Instruct_Dataset(BaseDataset):
         self.model_type = model_type
 
     def _get_audio_path(self, sample):
-        logging.info("vis root")
-        logging.info(self.vis_root)
-        logging.info(sample['video'])
+        # logging.info("vis root")
+        # logging.info(self.vis_root)
+        # logging.info(sample['video'])
 
         rel_audio_fp = sample['video']
         full_audio_fp = os.path.join(self.vis_root,  rel_audio_fp)
@@ -202,12 +202,12 @@ class Video_Instruct_Dataset(BaseDataset):
             try:
                 sample = self.annotation[index]
 
-                logging.info("==================================check sample==================================")
-                logging.info(sample)
+                # logging.info("==================================check sample==================================")
+                # logging.info(sample)
 
                 audio_path = self._get_audio_path(sample)
-                logging.info("audio path in item")
-                logging.info(audio_path)
+                # logging.info("audio path in item")
+                # logging.info(audio_path)
                 conversation_list = sample['QA']
 
                 audio = load_and_transform_audio_data(audio_path, 'cpu', clips_per_video=8)
