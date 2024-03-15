@@ -269,7 +269,6 @@ class Video_Instruct_Dataset(BaseDataset):
             attention_mask=input_ids.ne(self.tokenizer.pad_token_id),
         )
 
-
         if 'image' in instances[0]:
             images = [instance['image'] for instance in instances]
             if all(x is not None and x.shape == images[0].shape for x in images):
