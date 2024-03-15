@@ -284,8 +284,9 @@ class Video_Instruct_Dataset(BaseDataset):
                 batch['images'] = images
         batch['conv_type'] = 'multi'
 
-        # print(batch)
-
+        print("batch: ")
+        print(batch)
+        print(batch["images"].shape)
         return batch
 
 
