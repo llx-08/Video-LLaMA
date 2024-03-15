@@ -68,7 +68,6 @@ class WebvidInstruct_zh_Builder(Instruct_Builder):
     }
 
 
-
 @registry.register_builder("llava_instruct")
 class LlavaInstruct_Builder(Instruct_Builder):
     train_dataset_cls = Instruct_Dataset

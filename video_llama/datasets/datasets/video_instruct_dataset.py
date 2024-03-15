@@ -252,6 +252,31 @@ class Video_Instruct_Dataset(BaseDataset):
     def __len__(self):
         return len(self.annotation)
 
+    def collater(self, instances):
+        input_ids, labels = tuple([instance[key] for instance in instances]
+                                  for key in ("text_input", "labels"))
+        input_ids = torch.nn.utils.rnn.pad_sequence(
+            input_ids,
+            batch_first=True,
+            padding_value=self.tokenizer.pad_token_id)
+        labels = torch.nn.utils.rnn.pad_sequence(labels,
+                                                 batch_first=True,
+                                                 padding_value=IGNORE_INDEX)
+        batch = dict(
+            input_ids=input_ids,
+            labels=labels,
+            attention_mask=input_ids.ne(self.tokenizer.pad_token_id),
+        )
+
+        if 'image' in instances[0]:
+            images = [instance['image'] for instance in instances]
+            if all(x is not None and x.shape == images[0].shape for x in images):
+                batch['images'] = torch.stack(images)
+            else:
+                batch['images'] = images
+        batch['conv_type'] = 'multi'
+        return batch
+
 
 def convert_source_vicuna_format(sources):
     new_sources = []
