@@ -54,8 +54,8 @@ class WebvidDataset(BaseDataset):
         for _ in range(num_retries):
             sample = self.annotation.iloc[index]
 
-            logging.info("==================================check sample==================================")
-            logging.info(sample)
+            # logging.info("==================================check sample==================================")
+            # logging.info(sample)
 
             sample_dict = sample.to_dict()
 

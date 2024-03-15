@@ -491,16 +491,17 @@ class VideoLLAMA(Blip2Base):
             return {"loss": loss}
         else: # not chat
             image = samples["image"]
+            logging.info("image.shape")
             logging.info(image.shape)
 
-
-            if len(image.size()) != 5:
-                time = 1
-                image = einops.repeat(image, 'b c h w -> b c t h w',t = time)
+            # if len(image.size()) != 5:
+            #     time = 1
+            #     image = einops.repeat(image, 'b c h w -> b c t h w',t = time)
             
             if self.train_flag == 1:
-                image = einops.rearrange(image, 'b c t h w -> b t c h w')
+                # image = einops.rearrange(image, 'b c t h w -> b t c h w')
                 # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
+                logging.info("encode audio Qformer")
                 img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
 
             else:
