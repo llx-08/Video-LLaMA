@@ -447,7 +447,8 @@ class VideoLLAMA(Blip2Base):
                 img_embeds, atts_img = self.encode_videoQformer_visual(image)
             elif self.train_flag == 1: # always 1
                 num_patch_tokens = self.num_audio_query_token
-                image = einops.rearrange(image, 'b c t h w -> b t c h w')
+                # image = einops.rearrange(image, 'b c t h w -> b t c h w')
+
                 # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=
 
                 # RuntimeError: Given groups=1, weight of size [768, 1, 16, 16],
