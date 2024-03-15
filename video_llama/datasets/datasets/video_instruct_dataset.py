@@ -255,6 +255,12 @@ class Video_Instruct_Dataset(BaseDataset):
     def collater(self, instances):
         input_ids, labels = tuple([instance[key] for instance in instances]
                                   for key in ("text_input", "labels"))
+
+        print("collater:")
+        print(instances)
+        print(input_ids)
+        print(labels)
+
         input_ids = torch.nn.utils.rnn.pad_sequence(
             input_ids,
             batch_first=True,
@@ -268,6 +274,7 @@ class Video_Instruct_Dataset(BaseDataset):
             attention_mask=input_ids.ne(self.tokenizer.pad_token_id),
         )
 
+
         if 'image' in instances[0]:
             images = [instance['image'] for instance in instances]
             if all(x is not None and x.shape == images[0].shape for x in images):
@@ -275,6 +282,9 @@ class Video_Instruct_Dataset(BaseDataset):
             else:
                 batch['images'] = images
         batch['conv_type'] = 'multi'
+
+        print(batch)
+
         return batch
 
 

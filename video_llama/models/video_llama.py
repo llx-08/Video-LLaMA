@@ -344,7 +344,7 @@ class VideoLLAMA(Blip2Base):
     #  input audio shape [b t c h w] 
     def encode_audioQformer(self, audio,modality_type=ModalityType.AUDIO):
         print("==================++++++++++++ in encode audio qformer ++++++++++++==================")
-        print(audio.shape)
+        print(audio.shape)  # torch.Size([1, 8, 1, 128, 204])
 
         device = audio.device
         with self.maybe_autocast():
@@ -428,9 +428,6 @@ class VideoLLAMA(Blip2Base):
         return inputs_llama, atts_llama
 
     def forward(self, samples):
-
-        logging.info(f"\n======== samples =======")
-        logging.info(samples.keys)
 
         # chat
         if 'conv_type' in samples.keys() and samples['conv_type']=='multi':
