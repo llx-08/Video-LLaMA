@@ -343,8 +343,7 @@ class VideoLLAMA(Blip2Base):
             return img_embeds, atts_img
     #  input audio shape [b t c h w] 
     def encode_audioQformer(self, audio,modality_type=ModalityType.AUDIO):
-        print("==================++++++++++++ in encode audio qformer ++++++++++++==================")
-        print(audio.shape)  # torch.Size([1, 8, 1, 128, 204])
+        # torch.Size([1, 8, 1, 128, 204])
 
         device = audio.device
         with self.maybe_autocast():
@@ -491,8 +490,8 @@ class VideoLLAMA(Blip2Base):
             return {"loss": loss}
         else: # not chat
             image = samples["image"]
-            logging.info("image.shape")
-            logging.info(image.shape)
+            # logging.info("image.shape")
+            # logging.info(image.shape)
 
             # if len(image.size()) != 5:
             #     time = 1

@@ -217,9 +217,6 @@ class BaseTask:
                 }
             )
 
-            logging.info("++++++++++++++++++ samples in base task ++++++++++++++++++")
-            logging.info(samples.keys)
-
             lr_scheduler.step(cur_epoch=inner_epoch, cur_step=i)
 
             with torch.cuda.amp.autocast(enabled=use_amp):
