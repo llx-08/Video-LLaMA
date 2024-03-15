@@ -343,6 +343,9 @@ class VideoLLAMA(Blip2Base):
             return img_embeds, atts_img
     #  input audio shape [b t c h w] 
     def encode_audioQformer(self, audio,modality_type=ModalityType.AUDIO):
+        print("==================++++++++++++ in encode audio qformer ++++++++++++==================")
+        print(audio.shape)
+
         device = audio.device
         with self.maybe_autocast():
             audio_feature, audio_imagebind_finalout = self.audio_encoder.get_audio_feature(audio,modality_type=modality_type)
