@@ -257,9 +257,10 @@ class Video_Instruct_Dataset(BaseDataset):
                                   for key in ("text_input", "labels"))
 
         print("collater:")
-        print(instances)
-        print(input_ids)
-        print(labels)
+        print(type(instances))
+        print(len(instances))
+        # print(input_ids)
+        # print(labels)
 
         input_ids = torch.nn.utils.rnn.pad_sequence(
             input_ids,
@@ -283,7 +284,7 @@ class Video_Instruct_Dataset(BaseDataset):
                 batch['images'] = images
         batch['conv_type'] = 'multi'
 
-        print(batch)
+        # print(batch)
 
         return batch
 
