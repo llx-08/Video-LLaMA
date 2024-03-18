@@ -434,7 +434,7 @@ class VideoLLAMA(Blip2Base):
             im_patch_token_id = self.IMAGE_PATCH_TOKEN_ID
             image = samples["images"]
 
-            logging.info(image.shape)
+            # logging.info(image.shape)
 
             input_ids = samples['input_ids']
             # if len(image.size())==4:

@@ -272,7 +272,8 @@ class Video_Instruct_Dataset(BaseDataset):
         if 'image' in instances[0]:
             images = [instance['image'] for instance in instances]
             if all(x is not None and x.shape == images[0].shape for x in images):
-                batch['images'] = torch.stack(images).view(4, 8, 1, 128, 204)
+                # batch['images'] = torch.stack(images).view(4, 8, 1, 128, 204)
+                batch['images'] = torch.stack(images).view(1, 8, 1, 128, 204)
             else:
                 batch['images'] = images
         batch['conv_type'] = 'multi'

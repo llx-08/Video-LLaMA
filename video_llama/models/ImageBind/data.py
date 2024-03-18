@@ -115,7 +115,7 @@ def load_and_transform_audio_data(
     audio_paths,
     device,
     num_mel_bins=128,
-    target_length=204,
+    target_length=151, # 204,
     sample_rate=16000,
     clip_duration=2,
     clips_per_video=3,
