@@ -160,7 +160,7 @@ class Video_Instruct_Dataset(BaseDataset):
     #     batch['conv_type'] = 'multi'
     #     return batch
     def __init__(self, vis_processor, text_processor, vis_root, ann_root,num_video_query_token=32,
-                 tokenizer_name = '/mnt/workspace/ckpt/vicuna-13b/',data_type = 'video', model_type='vicuna'):
+                 tokenizer_name = "/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf",data_type = 'video', model_type='vicuna'):
         """
         aud_root (string): Root directory of audio (e.g. webvid_eval/video/)
         ann_root (string): Root directory of video (e.g. webvid_eval/annotations/)
@@ -255,8 +255,10 @@ class Video_Instruct_Dataset(BaseDataset):
     def collater(self, instances):
         input_ids, labels = tuple([instance[key] for instance in instances]
                                   for key in ("text_input", "labels"))
-        print(input_ids)
-        print(labels)
+
+        print("check ids:")
+        print(self.tokenizer.decode(input_ids))
+        print(self.tokenizer.decode(labels))
 
         input_ids = torch.nn.utils.rnn.pad_sequence(
             input_ids,
