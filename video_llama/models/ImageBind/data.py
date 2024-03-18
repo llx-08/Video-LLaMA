@@ -166,11 +166,11 @@ def load_and_transform_audio_data(
         audio_outputs.append(all_clips)
 
     result = torch.stack(audio_outputs, dim=0)
-    logging.info("load and transform data")
-    logging.info(result.shape)
+    # logging.info("load and transform data")
+    # logging.info(result.shape)
 
-    print("load and transform data")
-    print(result.shape) # 1,8,1,128,204
+    # print("load and transform data")
+    # print(result.shape) # 1,8,1,128,204
     return result
 
 
