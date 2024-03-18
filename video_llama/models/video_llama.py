@@ -487,6 +487,8 @@ class VideoLLAMA(Blip2Base):
                     labels=targets,
                 )
             loss = outputs.loss
+            print("forward output:")
+            print(outputs)
             return {"loss": loss}
         else: # not chat
             image = samples["image"]
@@ -513,6 +515,8 @@ class VideoLLAMA(Blip2Base):
             self.llama_tokenizer.padding_side = "right"
 
             text = [t + self.end_sym for t in samples["text_input"]]
+
+            print("text", text)
 
             logging.info("text before llama without chat")
             logging.info(text)
@@ -555,6 +559,8 @@ class VideoLLAMA(Blip2Base):
                     labels=targets,
                 )
             loss = outputs.loss
+            print("forward output:")
+            print(outputs)
 
         return {"loss": loss}
 

@@ -278,6 +278,9 @@ class Video_Instruct_Dataset(BaseDataset):
                 batch['images'] = images
         batch['conv_type'] = 'multi'
 
+        print(batch['input_ids'])
+        print(batch['labels'])
+
         return batch
 
 
