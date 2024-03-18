@@ -560,7 +560,14 @@ class VideoLLAMA(Blip2Base):
                 )
             loss = outputs.loss
             print("forward output:")
-            print(outputs)
+            print(self.llama_tokenizer(
+                outputs,
+                return_tensors="pt",
+                padding="longest",
+                truncation=True,
+                max_length=self.max_txt_len,
+                add_special_tokens=False
+            ))
 
         return {"loss": loss}
 
