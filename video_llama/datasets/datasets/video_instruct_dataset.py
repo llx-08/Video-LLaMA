@@ -255,6 +255,8 @@ class Video_Instruct_Dataset(BaseDataset):
     def collater(self, instances):
         input_ids, labels = tuple([instance[key] for instance in instances]
                                   for key in ("text_input", "labels"))
+        print(input_ids)
+        print(labels)
 
         input_ids = torch.nn.utils.rnn.pad_sequence(
             input_ids,
@@ -278,8 +280,8 @@ class Video_Instruct_Dataset(BaseDataset):
                 batch['images'] = images
         batch['conv_type'] = 'multi'
 
-        print(batch['input_ids'])
-        print(batch['labels'])
+        # print(batch['input_ids'])
+        # print(batch['labels'])
 
         return batch
 
