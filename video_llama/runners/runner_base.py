@@ -251,6 +251,8 @@ class RunnerBase:
 
             # create dataloaders
             split_names = sorted(self.datasets.keys())
+            print("check dataloader")
+            print(split_names)
 
             datasets = [self.datasets[split] for split in split_names]
             is_trains = [split in self.train_splits for split in split_names]
@@ -410,6 +412,8 @@ class RunnerBase:
             else:
                 # if no validation split is provided, we just save the checkpoint at the end of each epoch.
                 if not self.evaluate_only:
+                    logging.info("Start evaluation")
+
                     self._save_checkpoint(cur_epoch, is_best=False)
 
             if self.evaluate_only:
