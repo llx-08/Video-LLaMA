@@ -114,8 +114,8 @@ run:
   warmup_lr: 1e-6
 
   weight_decay: 0.05
-  max_epoch: 2
-  iters_per_epoch: 500 # 1000
+  max_epoch: 5
+  iters_per_epoch: 1000
   batch_size_train: 1
   batch_size_eval: 1
   num_workers: 4
@@ -129,7 +129,7 @@ run:
 
   evaluate: False
   train_splits: ["train"]
-  valid_splits: ["valid"]
+#  valid_splits: ["valid"]
 
   device: "cuda"
   world_size: 1
