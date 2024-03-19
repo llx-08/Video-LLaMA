@@ -256,8 +256,8 @@ class Video_Instruct_Dataset(BaseDataset):
         input_ids, labels = tuple([instance[key] for instance in instances]
                                   for key in ("text_input", "labels"))
 
-        print("check ids:")
-        print(self.tokenizer.batch_decode(input_ids))
+        # print("check ids:")
+        # print(self.tokenizer.batch_decode(input_ids))
         # print(self.tokenizer.batch_decode(labels))
 
         input_ids = torch.nn.utils.rnn.pad_sequence(
