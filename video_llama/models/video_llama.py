@@ -487,8 +487,8 @@ class VideoLLAMA(Blip2Base):
                     labels=targets,
                 )
             loss = outputs.loss
-            print("forward output:")
-            print(self.tokenizer.batch_decode(outputs))
+            # print("forward output:")
+            # print(self.tokenizer.batch_decode(outputs))
             return {"loss": loss}
         else: # not chat
             image = samples["image"]
