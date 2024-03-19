@@ -20,7 +20,7 @@ model:
   llama_model: "/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf"
   imagebind_ckpt_path: "/home/asr/lilinxuan/modelzoo/video_llama"
   ckpt: '/home/asr/lilinxuan/modelzoo/video_llama/VL_LLaMA_2_13B_Pretrained.pth'   # you can use our pretrained ckpt from https://huggingface.co/DAMO-NLP-SG/Video-LLaMA-2-13B-Pretrained/
-  ckpt_2:  '/home/asr/lilinxuan/modelzoo/video_llama/AL_LLaMA_2_13B_Pretrained.pth'
+  ckpt_2:  '/home/asr/lilinxuan/llx_videollama/video_llama/output/audiobranch_stage2_finetune/20240318021/checkpoint_2.pth # '/home/asr/lilinxuan/modelzoo/video_llama/AL_LLaMA_2_13B_Pretrained.pth'
 
 
   equip_audio_branch: True  # whether equips the audio branch
