@@ -54,7 +54,7 @@ class VideoLLAMA(Blip2Base):
         use_grad_checkpoint=False,
         vit_precision="fp16",
         freeze_vit=True,
-        freeze_qformer=True,
+        freeze_qformer=False,
         num_query_token=32,
         llama_model="",
         prompt_path="",
@@ -66,7 +66,7 @@ class VideoLLAMA(Blip2Base):
 
         frozen_llama_proj=True,
         frozen_video_Qformer=True,
-        frozen_audio_Qformer=True,
+        frozen_audio_Qformer=False,
 
         llama_proj_model='',
         fusion_header_type= "seqTransf",
@@ -574,7 +574,8 @@ class VideoLLAMA(Blip2Base):
     @classmethod
     def from_config(cls, cfg):
         vit_model = cfg.get("vit_model", "eva_clip_g")
-        q_former_model = cfg.get("q_former_model", "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xxl.pth")
+        q_former_model = cfg.get("q_former_model",
+                                 "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xxl.pth")
         img_size = cfg.get("image_size")
         num_query_token = cfg.get("num_query_token")
         llama_model = cfg.get("llama_model")
