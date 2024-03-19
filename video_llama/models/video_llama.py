@@ -584,7 +584,7 @@ class VideoLLAMA(Blip2Base):
         use_grad_checkpoint = cfg.get("use_grad_checkpoint", False)
         vit_precision = cfg.get("vit_precision", "fp16")
         freeze_vit = cfg.get("freeze_vit", True)
-        freeze_qformer = cfg.get("freeze_qformer", True)
+        freeze_qformer = cfg.get("freeze_qformer", False)
         low_resource = cfg.get("low_resource", False)
         device_8bit = cfg.get("device_8bit", 0)
 
@@ -593,7 +593,7 @@ class VideoLLAMA(Blip2Base):
         max_txt_len = cfg.get("max_txt_len", 32)
         end_sym = cfg.get("end_sym", '\n')
         
-        frozen_llama_proj = cfg.get("frozen_llama_proj", True)
+        frozen_llama_proj = cfg.get("frozen_llama_proj", False)
         frozen_video_Qformer = cfg.get("frozen_video_Qformer", True)
         frozen_audio_Qformer = cfg.get("frozen_audio_Qformer", True)
 

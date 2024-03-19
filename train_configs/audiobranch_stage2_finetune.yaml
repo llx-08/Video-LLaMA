@@ -18,7 +18,7 @@ model:
 
   # only train audio branch
   equip_audio_branch: True  # whether equips the audio branch
-  frozen_llama_proj: True
+  frozen_llama_proj: False
   frozen_video_Qformer: True
   frozen_audio_Qformer: False
 
