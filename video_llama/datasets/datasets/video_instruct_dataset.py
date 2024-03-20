@@ -180,10 +180,10 @@ class Video_Instruct_Dataset(BaseDataset):
         self.tokenizer = LlamaTokenizer.from_pretrained(tokenizer_name, use_fast=False)
         self.tokenizer.pad_token = self.tokenizer.unk_token
         self.tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=True)
-        self.tokenizer.add_tokens([DEFAULT_AUDIO_PATCH_TOKEN], special_tokens=True)
+        # self.tokenizer.add_tokens([DEFAULT_AUDIO_PATCH_TOKEN], special_tokens=True)
 
         self.IMAGE_PATCH_TOKEN_ID = self.tokenizer.get_vocab()[DEFAULT_IMAGE_PATCH_TOKEN]
-        self.AUDIO_PATCH_TOKEN_ID = self.tokenizer.get_vocab()[DEFAULT_AUDIO_PATCH_TOKEN]
+        # self.AUDIO_PATCH_TOKEN_ID = self.tokenizer.get_vocab()[DEFAULT_AUDIO_PATCH_TOKEN]
 
         self.transform = AlproVideoTrainProcessor(
             image_size=self.resize_size, n_frms=self.num_frm
@@ -322,7 +322,7 @@ def preprocess_multimodal(
     # image_token_len = multimodal_cfg['image_token_len']
     image_token_len = cur_token_len
     # conversation_list[0]["q"] = "<Video>"+DEFAULT_AUDIO_PATCH_TOKEN * image_token_len +"</Video> " + msg + conversation_list[0]["q"]
-    conversation_list[0]["q"] = "<Video>"+DEFAULT_AUDIO_PATCH_TOKEN * image_token_len +"</Video> " + msg + "Tell me what this audio is saying, give me the transcription of this video."
+    conversation_list[0]["q"] = "<Video>"+DEFAULT_IMAGE_PATCH_TOKEN * image_token_len +"</Video> " + msg + "Tell me what this audio is saying, give me the transcription of this video."
     return [conversation_list]
 
 def _add_speaker_and_signal(header, source, get_conversation=True):
