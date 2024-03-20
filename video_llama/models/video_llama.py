@@ -149,7 +149,6 @@ class VideoLLAMA(Blip2Base):
             param.requires_grad = False
         logging.info('Loading LLAMA Done')
 
-
         logging.info('Loading LLAMA proj')
         self.llama_proj = nn.Linear(
             self.Qformer.config.hidden_size, self.llama_model.config.hidden_size
@@ -350,7 +349,6 @@ class VideoLLAMA(Blip2Base):
             audio_feature, audio_imagebind_finalout = self.audio_encoder.get_audio_feature(audio,modality_type=modality_type)
             batch_size,time_length = audio.size()[:2]
 
-
             position_ids = torch.arange(time_length, dtype=torch.long, device=device)
             position_ids = position_ids.unsqueeze(0).expand(batch_size, -1)
 
@@ -485,8 +483,11 @@ class VideoLLAMA(Blip2Base):
                     labels=targets,
                 )
             loss = outputs.loss
-            # print("forward output:")
-            # print(self.tokenizer.batch_decode(outputs))
+            print("forward output:")
+            output_id = [outputs[i].index(max(outputs[i])) for i in len(outputs)]
+            print(self.tokenizer.batch_decode(output_id))
+            print("forward label:")
+            print(self.tokenizer.batch_decode(targets))
             return {"loss": loss}
         else: # not chat
             image = samples["image"]
