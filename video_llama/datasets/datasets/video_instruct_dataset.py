@@ -22,6 +22,8 @@ from video_llama.models.ImageBind.data import load_and_transform_audio_data
 import logging
 
 DEFAULT_IMAGE_PATCH_TOKEN = '<ImageHere>'
+DEFAULT_AUDIO_PATCH_TOKEN = '<AudioHere>'
+
 video_conversation = Conversation(
     system="",
     roles=("Human", "Assistant"),
@@ -178,7 +180,10 @@ class Video_Instruct_Dataset(BaseDataset):
         self.tokenizer = LlamaTokenizer.from_pretrained(tokenizer_name, use_fast=False)
         self.tokenizer.pad_token = self.tokenizer.unk_token
         self.tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=True)
+        self.tokenizer.add_tokens([DEFAULT_AUDIO_PATCH_TOKEN], special_tokens=True)
+
         self.IMAGE_PATCH_TOKEN_ID = self.tokenizer.get_vocab()[DEFAULT_IMAGE_PATCH_TOKEN]
+        self.AUDIO_PATCH_TOKEN_ID = self.tokenizer.get_vocab()[DEFAULT_AUDIO_PATCH_TOKEN]
 
         self.transform = AlproVideoTrainProcessor(
             image_size=self.resize_size, n_frms=self.num_frm
@@ -316,7 +321,7 @@ def preprocess_multimodal(
     is_multimodal = True
     # image_token_len = multimodal_cfg['image_token_len']
     image_token_len = cur_token_len
-    conversation_list[0]["q"] = "<Video>"+DEFAULT_IMAGE_PATCH_TOKEN * image_token_len +"</Video> " + msg + conversation_list[0]["q"]
+    conversation_list[0]["q"] = "<Video>"+DEFAULT_AUDIO_PATCH_TOKEN * image_token_len +"</Video> " + msg + conversation_list[0]["q"]
     return [conversation_list]
 
 def _add_speaker_and_signal(header, source, get_conversation=True):
@@ -432,7 +437,6 @@ def preprocess_for_llama_v2(
         ).input_ids
     targets = copy.deepcopy(input_ids)
 
-
     sep = "[/INST] "
     for conversation, target in zip(conversations, targets):
         # total_len = int(target.ne(tokenizer.pad_token_id).sum())
@@ -448,7 +452,6 @@ def preprocess_for_llama_v2(
                 break
             parts[0] += sep
 
-            
             round_len = len(tokenizer(rou).input_ids)
             instruction_len = len(tokenizer(parts[0]).input_ids) - 2 # 为什么减去2,speical token 的数目
 
