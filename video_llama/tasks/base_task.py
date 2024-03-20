@@ -14,7 +14,8 @@ from video_llama.common.dist_utils import get_rank, get_world_size, is_main_proc
 from video_llama.common.logger import MetricLogger, SmoothedValue
 from video_llama.common.registry import registry
 from video_llama.datasets.data_utils import prepare_sample
-
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter(log_dir='runs/loss')
 
 class BaseTask:
     def __init__(self, **kwargs):
@@ -222,6 +223,10 @@ class BaseTask:
 
             with torch.cuda.amp.autocast(enabled=use_amp):
                 loss = self.train_step(model=model, samples=samples)
+
+                writer.add_scalar(tag="loss",  # 可以暂时理解为图像的名字
+                                  scalar_value=loss,  # 纵坐标的值
+                                  global_step=i)
 
             # after_train_step()
             if use_amp:

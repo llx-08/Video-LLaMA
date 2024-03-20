@@ -4,7 +4,6 @@ import random
 import torch
 from torch.cuda.amp import autocast as autocast
 import torch.nn as nn
-
 from video_llama.common.registry import registry
 from video_llama.models.blip2 import Blip2Base, disabled_train
 from video_llama.models.modeling_llama import LlamaForCausalLM
@@ -18,6 +17,8 @@ from video_llama.models.ImageBind.models.imagebind_model import ImageBindModel,M
 from video_llama.models.ImageBind.models import imagebind_model
 from video_llama.models.ImageBind.data import load_and_transform_audio_data
 # from flamingo_pytorch import PerceiverResampler
+
+
 @registry.register_model("video_llama")
 class VideoLLAMA(Blip2Base):
     """
@@ -483,6 +484,8 @@ class VideoLLAMA(Blip2Base):
                     labels=targets,
                 )
             loss = outputs.loss
+
+
             # print("forward output:")
             # output_id = [outputs[i].index(max(outputs[i])) for i in len(outputs)]
             # print(self.tokenizer.batch_decode(output_id))
