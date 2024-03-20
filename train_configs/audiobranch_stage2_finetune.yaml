@@ -39,21 +39,18 @@ model:
 #  prompt_path: "prompts/alignment_image.txt"
 #  prompt_template: '###Human: {} ###Assistant: '
 
-
-  
-
 datasets:
-  cc_sbu_align:
-    data_type: images
-    build_info:
-      storage: /home/asr/lilinxuan/llx_videollama/dataset/cc_sbu_align/
-    vis_processor:
-      train:
-        name: "blip2_image_train"
-        image_size: 224
-    text_processor:
-      train:
-        name: "blip_caption"
+#  cc_sbu_align:
+#    data_type: images
+#    build_info:
+#      storage: /home/asr/lilinxuan/llx_videollama/dataset/cc_sbu_align/
+#    vis_processor:
+#      train:
+#        name: "blip2_image_train"
+#        image_size: 224
+#    text_processor:
+#      train:
+#        name: "blip_caption"
 #
 #  llava_instruct:
 #    data_type: images
