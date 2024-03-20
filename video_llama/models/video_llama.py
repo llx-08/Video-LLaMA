@@ -437,23 +437,21 @@ class VideoLLAMA(Blip2Base):
             # logging.info(image.shape)
 
             input_ids = samples['input_ids']
-            # if len(image.size())==4:
-            #     time = 1
-            #     image = einops.repeat(image, 'b c h w -> b c t h w',t = time)
+            if len(image.size())==4:
+                time = 1
+                image = einops.repeat(image, 'b c h w -> b c t h w',t = time)
 
             if self.train_flag == 0:
                 num_patch_tokens = self.num_video_query_token
                 img_embeds, atts_img = self.encode_videoQformer_visual(image)
             elif self.train_flag == 1: # always 1
                 num_patch_tokens = self.num_audio_query_token
-                # image = einops.rearrange(image, 'b c t h w -> b t c h w')
-
-                # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=
+                image = einops.rearrange(image, 'b c t h w -> b t c h w')
+                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VIDEO)
 
                 # RuntimeError: Given groups=1, weight of size [768, 1, 16, 16],
                 # expected input[32, 3, 224, 224] to have 1 channels, but got 3 channels instead
-                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
-                # audio_embeds, atts_audio = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
+                # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
 
             temp_input_ids = copy.deepcopy(input_ids)
             temp_input_ids[temp_input_ids == im_patch_token_id] = 0
@@ -495,15 +493,15 @@ class VideoLLAMA(Blip2Base):
             # logging.info("image.shape")
             # logging.info(image.shape)
 
-            # if len(image.size()) != 5:
-            #     time = 1
-            #     image = einops.repeat(image, 'b c h w -> b c t h w',t = time)
+            if len(image.size()) != 5:
+                time = 1
+                image = einops.repeat(image, 'b c h w -> b c t h w',t = time)
             
             if self.train_flag == 1:
-                # image = einops.rearrange(image, 'b c t h w -> b t c h w')
-                # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
+                image = einops.rearrange(image, 'b c t h w -> b t c h w')
+                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
                 logging.info("encode audio Qformer")
-                img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
+                # img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
 
             else:
                 img_embeds, atts_img = self.encode_videoQformer_visual(image)
@@ -518,8 +516,8 @@ class VideoLLAMA(Blip2Base):
 
             print("text", text)
 
-            logging.info("text before llama without chat")
-            logging.info(text)
+            print("text before llama without chat")
+            print(text)
 
             to_regress_tokens = self.llama_tokenizer(
                 text,
@@ -559,15 +557,6 @@ class VideoLLAMA(Blip2Base):
                     labels=targets,
                 )
             loss = outputs.loss
-            print("forward output:")
-            print(self.llama_tokenizer(
-                outputs,
-                return_tensors="pt",
-                padding="longest",
-                truncation=True,
-                max_length=self.max_txt_len,
-                add_special_tokens=False
-            ))
 
         return {"loss": loss}
 
