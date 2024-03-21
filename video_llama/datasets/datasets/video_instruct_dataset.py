@@ -322,7 +322,8 @@ def preprocess_multimodal(
     # image_token_len = multimodal_cfg['image_token_len']
     image_token_len = cur_token_len
     # conversation_list[0]["q"] = "<Video>"+DEFAULT_AUDIO_PATCH_TOKEN * image_token_len +"</Video> " + msg + conversation_list[0]["q"]
-    conversation_list[0]["q"] = "<Video>"+DEFAULT_IMAGE_PATCH_TOKEN * image_token_len +"</Video> " + msg + "Tell me what this audio is saying, give me the transcription of this video."
+    conversation_list[0]["q"] = "<Video>"+DEFAULT_IMAGE_PATCH_TOKEN * image_token_len +"</Video> " + msg + \
+                                "Tell me what this audio is saying, give me the transcription of this video."
     return [conversation_list]
 
 def _add_speaker_and_signal(header, source, get_conversation=True):

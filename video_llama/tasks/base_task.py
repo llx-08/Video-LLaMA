@@ -226,7 +226,7 @@ class BaseTask:
 
                 writer.add_scalar(tag="loss",  # 可以暂时理解为图像的名字
                                   scalar_value=loss,  # 纵坐标的值
-                                  global_step=i)
+                                  global_step=epoch*iters_per_epoch+i)
 
             # after_train_step()
             if use_amp:
