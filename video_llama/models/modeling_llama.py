@@ -702,16 +702,20 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             shift_labels = shift_labels.to(shift_logits.device)
 
             l.info("loss:")
-            l.info(shift_logits)
-            l.info(shift_labels)
+            l.info(shift_logits.shape)
+            l.info(shift_labels.shape)
 
             # # Cross Entropy
             # loss_fct = CrossEntropyLoss()
             # loss = loss_fct(shift_logits, shift_labels)
 
             # RMSE
-            p_dist = nn.PairwiseDistance(p=2)
-            loss = p_dist(shift_logits, shift_labels)
+            # p_dist = nn.PairwiseDistance(p=2)
+            # loss = p_dist(shift_logits, shift_labels)
+
+            # MSE
+            mse = MSELoss()
+            loss = mse(shift_logits, shift_labels)
 
         if not return_dict:
             output = (logits,) + outputs[1:]
