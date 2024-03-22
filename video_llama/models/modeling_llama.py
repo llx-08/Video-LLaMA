@@ -14,7 +14,7 @@ from transformers.modeling_outputs import BaseModelOutputWithPast, CausalLMOutpu
 from transformers.modeling_utils import PreTrainedModel
 from transformers.utils import add_start_docstrings, add_start_docstrings_to_model_forward, logging, replace_return_docstrings
 from transformers.models.llama.configuration_llama import LlamaConfig
-
+import logging as l
 
 logger = logging.get_logger(__name__)
 
@@ -695,22 +695,21 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             shift_logits = logits[..., :-1, :].contiguous()
             shift_labels = labels[..., 1:].contiguous()
 
-            # # Flatten the tokens
-            # loss_fct = CrossEntropyLoss()
-            # shift_logits = shift_logits.view(-1, self.config.vocab_size)
-            # shift_labels = shift_labels.view(-1)
-            # # Enable model parallelism
-            # shift_labels = shift_labels.to(shift_logits.device)
-            # loss = loss_fct(shift_logits, shift_labels)
-
+            # Flatten the tokens
             shift_logits = shift_logits.view(-1, self.config.vocab_size)
             shift_labels = shift_labels.view(-1)
             # Enable model parallelism
             shift_labels = shift_labels.to(shift_logits.device)
-            logging.info("loss:")
-            logging.info(shift_logits)
-            logging.info(shift_labels)
 
+            l.info("loss:")
+            l.info(shift_logits)
+            l.info(shift_labels)
+
+            # # Cross Entropy
+            # loss_fct = CrossEntropyLoss()
+            # loss = loss_fct(shift_logits, shift_labels)
+
+            # RMSE
             p_dist = nn.PairwiseDistance(p=2)
             loss = p_dist(shift_logits, shift_labels)
 
