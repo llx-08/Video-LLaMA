@@ -705,9 +705,11 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             # Enable model parallelism
             shift_labels = shift_labels.to(shift_logits.device)
 
-            # l.info("loss:")
-            # l.info(shift_logits.shape)
-            # l.info(shift_labels.shape)
+            l.info("loss:")
+            l.info(shift_logits.shape)
+            l.info(shift_labels.shape)
+            l.info(shift_logits)
+            l.info(shift_labels)
 
             positive_shift_labels = torch.where(shift_labels >= 0, shift_labels, 0)
             on_hot_labels = nn.functional.one_hot(positive_shift_labels, num_classes=self.config.vocab_size)
