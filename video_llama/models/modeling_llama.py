@@ -704,7 +704,8 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             l.info("loss:")
             l.info(shift_logits.shape)
             l.info(shift_labels.shape)
-
+            l.info(shift_logits)
+            l.info(shift_labels)
             # # Cross Entropy
             # loss_fct = CrossEntropyLoss()
             # loss = loss_fct(shift_logits, shift_labels)
