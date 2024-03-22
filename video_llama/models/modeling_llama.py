@@ -706,7 +706,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             shift_labels = shift_labels.to(shift_logits.device)
 
             positive_shift_labels = torch.where(shift_labels >= 0, shift_labels, 0)
-            one_hot_labels = nn.functional.one_hot(positive_shift_labels, num_classes=self.config.vocab_size)
+            one_hot_labels = nn.functional.one_hot(positive_shift_labels, num_classes=self.config.vocab_size).float()
             # # Cross Entropy
             # loss_fct = CrossEntropyLoss()
             # loss = loss_fct(shift_logits, shift_labels)
