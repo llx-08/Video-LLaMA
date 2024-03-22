@@ -689,23 +689,28 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         hidden_states = outputs[0]
         logits = self.lm_head(hidden_states)
 
+        # add softmax
+        logits = nn.functional.softmax(logits, dim=-1)
+
         loss = None
         if labels is not None:
             # Shift so that tokens < n predict n
             shift_logits = logits[..., :-1, :].contiguous()
             shift_labels = labels[..., 1:].contiguous()
 
+            # origin method: use lm_head output to calculate loss without softmax
             # Flatten the tokens
             shift_logits = shift_logits.view(-1, self.config.vocab_size)
             shift_labels = shift_labels.view(-1)
             # Enable model parallelism
             shift_labels = shift_labels.to(shift_logits.device)
 
-            l.info("loss:")
-            l.info(shift_logits.shape)
-            l.info(shift_labels.shape)
-            l.info(shift_logits)
-            l.info(shift_labels)
+            # l.info("loss:")
+            # l.info(shift_logits.shape)
+            # l.info(shift_labels.shape)
+
+            positive_shift_labels = torch.where(shift_labels >= 0, shift_labels, 0)
+            on_hot_labels = nn.functional.one_hot(positive_shift_labels, num_classes=self.config.vocab_size)
             # # Cross Entropy
             # loss_fct = CrossEntropyLoss()
             # loss = loss_fct(shift_logits, shift_labels)
@@ -716,7 +721,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
 
             # MSE
             mse = MSELoss()
-            loss = mse(shift_logits, shift_labels)
+            loss = mse(shift_logits, on_hot_labels)
 
         if not return_dict:
             output = (logits,) + outputs[1:]
