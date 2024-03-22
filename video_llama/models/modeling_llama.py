@@ -718,15 +718,15 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             # MSE
             mse = MSELoss()
 
-            l.info("loss:")
-            l.info(shift_logits.shape)
-            l.info(one_hot_labels.shape)
+            # l.info("loss:")
+            # l.info(shift_logits.shape)
+            # l.info(one_hot_labels.shape)
 
-            l.info(shift_logits)
-            l.info(one_hot_labels)
+            # l.info(shift_logits)
+            # l.info(one_hot_labels)
 
-            l.info(shift_logits.dtype)
-            l.info(one_hot_labels.dtype)
+            # l.info(shift_logits.dtype)
+            # l.info(one_hot_labels.dtype)
 
             loss = mse(shift_logits, one_hot_labels)
 
