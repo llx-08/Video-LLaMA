@@ -705,19 +705,19 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             # Enable model parallelism
             shift_labels = shift_labels.to(shift_logits.device)
 
-            positive_shift_labels = torch.where(shift_labels >= 0, shift_labels, 0)
-            one_hot_labels = nn.functional.one_hot(positive_shift_labels, num_classes=self.config.vocab_size).float()
+            # positive_shift_labels = torch.where(shift_labels >= 0, shift_labels, 0)
+            # one_hot_labels = nn.functional.one_hot(positive_shift_labels, num_classes=self.config.vocab_size).float()
             # # Cross Entropy
-            # loss_fct = CrossEntropyLoss()
-            # loss = loss_fct(shift_logits, shift_labels)
+            loss_fct = CrossEntropyLoss()
+            loss = loss_fct(shift_logits, shift_labels)
 
-            # RMSE
+            # # RMSE
             # p_dist = nn.PairwiseDistance(p=2)
             # loss = p_dist(shift_logits, shift_labels)
 
             # MSE
-            mse = MSELoss()
-            loss = mse(shift_logits, one_hot_labels)
+            # mse = MSELoss()
+            # loss = mse(shift_logits, one_hot_labels)
 
         if not return_dict:
             output = (logits,) + outputs[1:]
