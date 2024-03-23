@@ -690,7 +690,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         logits = self.lm_head(hidden_states)
 
         # add softmax
-        logits = nn.functional.softmax(logits, dim=-1)
+        # logits = nn.functional.softmax(logits, dim=-1)
 
         loss = None
         if labels is not None:
