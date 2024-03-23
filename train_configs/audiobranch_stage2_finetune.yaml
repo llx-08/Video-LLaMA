@@ -119,7 +119,7 @@ run:
   weight_decay: 0.05
   max_epoch: 100
   iters_per_epoch: 1000
-  batch_size_train: 16
+  batch_size_train: 8
   batch_size_eval: 1
   num_workers: 4
   warmup_steps: 400
@@ -137,4 +137,4 @@ run:
   device: "cuda"
   world_size: 2
   dist_url: "env://"
-  distributed: True
+  distributed: False
