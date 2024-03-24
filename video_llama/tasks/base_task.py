@@ -15,7 +15,9 @@ from video_llama.common.logger import MetricLogger, SmoothedValue
 from video_llama.common.registry import registry
 from video_llama.datasets.data_utils import prepare_sample
 from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter(log_dir='runs/CE_loss_min_lr_1e-15')
+import time
+
+writer = SummaryWriter(log_dir='runs/CE_loss_min_lr_1e-18'+str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
 class BaseTask:
     def __init__(self, **kwargs):
