@@ -323,7 +323,7 @@ def preprocess_multimodal(
     image_token_len = cur_token_len
     # conversation_list[0]["q"] = "<Video>"+DEFAULT_AUDIO_PATCH_TOKEN * image_token_len +"</Video> " + msg + conversation_list[0]["q"]
     conversation_list[0]["q"] = "<Video>"+DEFAULT_IMAGE_PATCH_TOKEN * image_token_len +"</Video> " + msg + \
-                                "Transcript the audio."
+                                "Please transcribe the content of this audio into text format."
     return [conversation_list]
 
 def _add_speaker_and_signal(header, source, get_conversation=True):
