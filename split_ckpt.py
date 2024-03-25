@@ -1,6 +1,8 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
+from video_llama.models.blip2 import Blip2Base, disabled_train
+
 
 # 假设我们有一个预训练的模型
 class YourModel(Blip2Base):
