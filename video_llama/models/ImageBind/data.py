@@ -110,7 +110,6 @@ def load_and_transform_text(text, device):
     tokens = torch.cat(tokens, dim=0)
     return tokens
 
-
 def load_and_transform_audio_data(
     audio_paths,
     device,
