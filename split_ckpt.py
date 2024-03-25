@@ -4,7 +4,7 @@ from torch.nn import functional as F
 from video_llama.models.blip2 import Blip2Base, disabled_train
 
 # 加载预训练的模型checkpoint
-checkpoint = torch.load('/lilinxuan/llx_videollama/video_llama/output'
+checkpoint = torch.load('/home/asr/lilinxuan/llx_videollama/video_llama/output'
                         '/audiobranch_stage2_finetune/20240324150/checkpoint_199.pth')
 print("dict")
 print(checkpoint)
