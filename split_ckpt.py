@@ -2,12 +2,13 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 from video_llama.models.blip2 import Blip2Base, disabled_train
+import logging
 
 # 加载预训练的模型checkpoint
 checkpoint = torch.load('/home/asr/lilinxuan/llx_videollama/video_llama/output'
                         '/audiobranch_stage2_finetune/20240324150/checkpoint_199.pth')
 print("dict")
-print(checkpoint)
+print(checkpoint.keys())
 
 # 假设我们有一个预训练的模型
 class YourModel(Blip2Base):
