@@ -61,7 +61,6 @@ class YourModel(Blip2Base):
         for layer in self.Qformer.bert.encoder.layer:
             layer.output = None
             layer.intermediate = None
-        self.load_from_pretrained(url_or_filename=q_former_model)
 
         # llama linear
         self.llama_proj = nn.Linear(
@@ -74,16 +73,15 @@ class YourModel(Blip2Base):
 # 实例化模型
 model = YourModel()
 
-
 # 假设checkpoint包含模型的状态字典和可能的其他信息，如优化器状态
-model.load_state_dict(checkpoint['model_state_dict'])
+model.load_state_dict(checkpoint['model'])
 
 for name, param in model.named_parameters():
     print(name)
 
 # 分割模型参数
-audio_Qformer = {name: param for name, param in model.named_parameters() if 'encoder' in name}
-llama_proj = {name: param for name, param in model.named_parameters() if 'decoder' in name}
+audio_Qformer = {name: param for name, param in model.named_parameters() if 'audio_Qformer' in name}
+llama_proj = {name: param for name, param in model.named_parameters() if 'llama_model' in name}
 
 audio_Qformer = nn.Sequential(*[nn.ParameterDict(list(params.items())) for params in [audio_Qformer]])
 

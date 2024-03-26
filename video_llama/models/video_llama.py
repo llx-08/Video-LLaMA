@@ -49,7 +49,8 @@ class VideoLLAMA(Blip2Base):
     def __init__(
         self,
         vit_model="eva_clip_g",
-        q_former_model="https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xxl.pth",
+        # q_former_model="https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xxl.pth",
+        q_former_model='/home/asr/lilinxuan/llx_videollama/video_llama/output/audiobranch_stage2_finetune/20240324150/checkpoint_199.pth',
         img_size=224,
         drop_path_rate=0,
         use_grad_checkpoint=False,
@@ -69,7 +70,7 @@ class VideoLLAMA(Blip2Base):
         frozen_video_Qformer=True,
         frozen_audio_Qformer=False,
 
-        llama_proj_model='',
+        llama_proj_model='/home/asr/lilinxuan/llx_videollama/video_llama/output/audiobranch_stage2_finetune/20240324150/checkpoint_199.pth',
         fusion_header_type= "seqTransf",
         max_frame_pos= 32,
         fusion_head_layers = 2,
