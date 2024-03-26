@@ -721,6 +721,9 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             # loss = mse(shift_logits, one_hot_labels)
 
             token_logits = nn.functional.softmax(logits, dim=-1)
+            print("logit shape")
+            print(token_logits.shape)
+
             ids = torch.multinomial(token_logits, num_samples=1)
             tokenizer = LlamaTokenizer.from_pretrained("/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf", use_fast=False)
             print("lables:")
