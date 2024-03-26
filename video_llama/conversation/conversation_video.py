@@ -290,14 +290,15 @@ class Chat:
         print(audio.shape)
 
         audio_emb, _ = self.model.encode_audioQformer(audio)
-        # zero_img_embed = torch.zeros_like(audio_emb)
+        zero_img_embed = torch.zeros_like(audio_emb)
 
-        # img_list.append(zero_img_embed)
+        img_list.append(zero_img_embed)
         img_list.append(audio_emb)
 
         conv.system = ""
         # conv.append_message(conv.roles[0], "The audio of this video is <Video><ImageHere></Video> ")
-        conv.append_message(conv.roles[0], "Close your eyes, open your ears and you listen that <Video><ImageHere></Video>.  \
+        conv.append_message(conv.roles[0], "Close your eyes, open your ears and you imagine only based on the sound that: <ImageHere>."
+                                           "Close your eyes, open your ears and you listen that <Video><ImageHere></Video>.  \
                 Now answer my question based on what you have just heard.")
 
         return "Received."
