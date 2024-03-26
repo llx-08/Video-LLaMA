@@ -721,13 +721,8 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             # loss = mse(shift_logits, one_hot_labels)
 
             token_logits = nn.functional.softmax(logits.view(logits.shape[0]*logits.shape[1], logits.shape[2]), dim=-1)
-            print("logit shape")
-            print(token_logits.shape)
-
             # ids = torch.multinomial(token_logits, num_samples=1)
             ids = torch.argmax(token_logits, dim=-1)
-            print("check ids")
-            print(ids.shape)
             tokenizer = LlamaTokenizer.from_pretrained("/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf", use_fast=False, skip_special_tokens=True)
             DEFAULT_IMAGE_PATCH_TOKEN = '<ImageHere>'
             DEFAULT_AUDIO_PATCH_TOKEN = '<AudioHere>'

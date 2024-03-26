@@ -111,6 +111,7 @@ class VideoLLAMA(Blip2Base):
             layer.output = None
             layer.intermediate = None
         self.load_from_pretrained(url_or_filename=q_former_model)
+        logging.info('loading Q former from:'+q_former_model)
 
         if freeze_qformer:
             for name, param in self.Qformer.named_parameters():
@@ -558,7 +559,8 @@ class VideoLLAMA(Blip2Base):
     def from_config(cls, cfg):
         vit_model = cfg.get("vit_model", "eva_clip_g")
         q_former_model = cfg.get("q_former_model",
-                                 "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xxl.pth")
+                                 '/home/asr/lilinxuan/llx_videollama/video_llama/output/audiobranch_stage2_finetune/20240324150/checkpoint_199.pth')
+                                 # "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xxl.pth")
         img_size = cfg.get("image_size")
         num_query_token = cfg.get("num_query_token")
         llama_model = cfg.get("llama_model")
