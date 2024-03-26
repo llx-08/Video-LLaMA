@@ -3,6 +3,7 @@
 """ PyTorch LLaMA model."""
 import math
 from typing import List, Optional, Tuple, Union
+from transformers import AutoTokenizer, AutoModelForCausalLM, LlamaTokenizer
 
 import torch
 import torch.utils.checkpoint
@@ -718,6 +719,14 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             # MSE
             # mse = MSELoss()
             # loss = mse(shift_logits, one_hot_labels)
+
+            token_logits = nn.functional.softmax(logits, dim=-1)
+            ids = torch.multinomial(token_logits, num_samples=1)
+            tokenizer = LlamaTokenizer.from_pretrained("/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf", use_fast=False)
+            print("lables:")
+            print(tokenizer.batch_decode(labels))
+            print("output:")
+            print(tokenizer.batch_decode(ids))
 
         if not return_dict:
             output = (logits,) + outputs[1:]
