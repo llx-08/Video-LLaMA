@@ -725,6 +725,8 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             print(token_logits.shape)
 
             ids = torch.multinomial(token_logits, num_samples=1)
+            print("check ids")
+            print(ids)
             tokenizer = LlamaTokenizer.from_pretrained("/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf", use_fast=False, skip_special_tokens=True)
             DEFAULT_IMAGE_PATCH_TOKEN = '<ImageHere>'
             DEFAULT_AUDIO_PATCH_TOKEN = '<AudioHere>'
