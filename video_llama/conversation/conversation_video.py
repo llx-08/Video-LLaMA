@@ -290,9 +290,9 @@ class Chat:
         print(audio.shape)
 
         audio_emb, _ = self.model.encode_audioQformer(audio)
-        zero_img_embed = torch.zeros_like(audio_emb)
+        # zero_img_embed = torch.zeros_like(audio_emb)
 
-        img_list.append(zero_img_embed)
+        # img_list.append(zero_img_embed)
         img_list.append(audio_emb)
 
         conv.system = ""
