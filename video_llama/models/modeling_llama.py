@@ -720,7 +720,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             # mse = MSELoss()
             # loss = mse(shift_logits, one_hot_labels)
 
-            token_logits = nn.functional.softmax(logits, dim=-1)
+            token_logits = nn.functional.softmax(logits.view(logits.shape[0]*logits.shape[1], logits.shape[2]), dim=-1)
             print("logit shape")
             print(token_logits.shape)
 
