@@ -297,8 +297,8 @@ class Chat:
 
         conv.system = ""
         # conv.append_message(conv.roles[0], "The audio of this video is <Video><ImageHere></Video> ")
-        conv.append_message(conv.roles[0], "<ImageHere> <Video><ImageHere></Video>.  \
-                Please transcribe the content of this audio into text format")
+        conv.append_message(conv.roles[0], "The audio of this video is <ImageHere> <Video><ImageHere></Video>.  \
+                Please transcribe the content of this audio into text format.")
 
         return "Received."
 
