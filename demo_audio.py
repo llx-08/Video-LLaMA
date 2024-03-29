@@ -95,15 +95,6 @@ while True:
     num_beams = 2
     temperature = 1.0
 
-    # llm_message = chat.answer(conv=chat_state,
-    #                               img_list=img_list,
-    #                               num_beams=num_beams,
-    #                               temperature=temperature,
-    #                               max_new_tokens=300,
-    #                               max_length=2000)[0]
-    # print(chat_state.get_prompt())
-    # print(chat_state)
-    # print(llm_message)
 
     llm_message = chat.answer(conv=chat_state,
                                   img_list=img_list,

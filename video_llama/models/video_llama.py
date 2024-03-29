@@ -49,8 +49,8 @@ class VideoLLAMA(Blip2Base):
     def __init__(
         self,
         vit_model="eva_clip_g",
-        # q_former_model="https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xxl.pth",
-        q_former_model='/home/asr/lilinxuan/llx_videollama/video_llama/output/audiobranch_stage2_finetune/20240324150/checkpoint_199.pth',
+        q_former_model="https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_flant5xxl.pth",
+        # q_former_model='/home/asr/lilinxuan/llx_videollama/video_llama/output/audiobranch_stage2_finetune/20240324150/checkpoint_199.pth',
         img_size=224,
         drop_path_rate=0,
         use_grad_checkpoint=False,
@@ -281,7 +281,6 @@ class VideoLLAMA(Blip2Base):
 
     def encode_videoQformer_visual(self, image):
         device = image.device
-        
         # input shape b,c,t,h,w
         batch_size,_,time_length,_,_ = image.size()
         image = einops.rearrange(image, 'b c t h w -> (b t) c h w')
@@ -297,7 +296,6 @@ class VideoLLAMA(Blip2Base):
                 encoder_attention_mask=image_atts,
                 return_dict=True,
             )
-
             # add frame_pos embedding
             position_ids = torch.arange(time_length, dtype=torch.long, device=query_tokens.device)
             position_ids = position_ids.unsqueeze(0).expand(batch_size, -1)
@@ -455,6 +453,7 @@ class VideoLLAMA(Blip2Base):
                 img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.AUDIO)
 
             temp_input_ids = copy.deepcopy(input_ids)
+            # 将特殊token设定为0
             temp_input_ids[temp_input_ids == im_patch_token_id] = 0
             temp_input_embedding = self.llama_model.model.embed_tokens(temp_input_ids)
 

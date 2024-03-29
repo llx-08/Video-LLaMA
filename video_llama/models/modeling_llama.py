@@ -666,6 +666,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         >>> tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
         "Hey, are you consciours? Can you talk to me?\nI'm not consciours, but I can talk to you."
         ```"""
+        DEFAULT_IMAGE_PATCH_TOKEN = '<ImageHere>'
 
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (
@@ -722,10 +723,9 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
 
             token_logits = nn.functional.softmax(logits.view(logits.shape[0]*logits.shape[1], logits.shape[2]), dim=-1)
             # ids = torch.multinomial(token_logits, num_samples=1)
+
             ids = torch.argmax(token_logits, dim=-1)
             tokenizer = LlamaTokenizer.from_pretrained("/home/asr/lilinxuan/modelzoo/video_llama/llama-2-13b-chat-hf", use_fast=False, skip_special_tokens=True)
-            DEFAULT_IMAGE_PATCH_TOKEN = '<ImageHere>'
-            DEFAULT_AUDIO_PATCH_TOKEN = '<AudioHere>'
             tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=True)
             print("lables:")
             print(tokenizer.batch_decode(labels))
