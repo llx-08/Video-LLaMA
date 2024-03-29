@@ -367,7 +367,7 @@ class Chat:
         print(img_list[0].shape)
 
         for i in mixed_embs:
-            print(i)
+            print(i.shape)
 
         mixed_embs = torch.cat(mixed_embs, dim=1)
         return mixed_embs
