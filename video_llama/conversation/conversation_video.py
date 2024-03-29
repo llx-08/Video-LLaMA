@@ -364,7 +364,7 @@ class Chat:
         mixed_embs = [emb for pair in zip(seg_embs[:-1], img_list) for emb in pair] + [seg_embs[-1]]
 
         print("check get_context_emb")
-        print(img_list.shape)
+        print(img_list[0].shape)
 
         for i in mixed_embs:
             print(i)
