@@ -363,12 +363,6 @@ class Chat:
         seg_embs = [self.model.llama_model.model.embed_tokens(seg_t) for seg_t in seg_tokens]
         mixed_embs = [emb for pair in zip(seg_embs[:-1], img_list) for emb in pair] + [seg_embs[-1]]
 
-        print("check get_context_emb")
-        print(img_list[0].shape)
-
-        for i in mixed_embs:
-            print(i.shape)
-
         mixed_embs = torch.cat(mixed_embs, dim=1)
         return mixed_embs
 

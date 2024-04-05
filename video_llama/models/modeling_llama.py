@@ -711,6 +711,11 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             # one_hot_labels = nn.functional.one_hot(positive_shift_labels, num_classes=self.config.vocab_size).float()
             # # Cross Entropy
             loss_fct = CrossEntropyLoss()
+
+            print("check shape")
+            print(shift_logits.shape)
+            print(shift_labels.shape)
+
             loss = loss_fct(shift_logits, shift_labels)
 
             # # RMSE

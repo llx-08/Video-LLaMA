@@ -226,8 +226,8 @@ class BaseTask:
             with torch.cuda.amp.autocast(enabled=use_amp):
                 loss = self.train_step(model=model, samples=samples)
 
-                writer.add_scalar(tag="loss",  # 可以暂时理解为图像的名字
-                                  scalar_value=loss,  # 纵坐标的值
+                writer.add_scalar(tag="loss",
+                                  scalar_value=loss,
                                   global_step=epoch*iters_per_epoch+i)
 
             # after_train_step()
